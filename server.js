@@ -36,7 +36,7 @@ client.on('guildMemberAdd', guildMember => {
     ]
     var randomIndex = Math.floor(Math.random() * welcomeImages.length);
 
-    guildMember.guild.channels.cache.get('849255437228572703').send(`Welcome <@${guildMember.user.id}> to Inovus Labs IEDC Discord Server!\n`, {
+    guildMember.guild.channels.cache.get(process.env.GENERAL_CHANNEL).send(`Welcome <@${guildMember.user.id}> to Inovus Labs IEDC Discord Server!\n`, {
         files: [`${welcomeImages[randomIndex]}`]
     })
 })
