@@ -9,8 +9,11 @@ client.login(process.env.DISCORDJS_BOT_TOKEN);
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
     client.channels.cache.get(process.env.GENERAL_CHANNEL).send('👋')
-    client.channels.cache.get(process.env.GENERAL_CHANNEL).send(`Hey it\'s me ${client.user.username}.\nI\'m back online.\nSorry for the little nap! 😊`)
+    client.channels.cache.get(process.env.GENERAL_CHANNEL).send(`Hey fellas, I\'m back online.\nSorry for the little nap!\n😊`, {
+        files: ['http://www.whykol.com/wp-content/uploads/2014/11/punjabi-house-163.jpg']
+    })
 });
+
 
 client.on('message', (message) => {
     // console.log(`[${message.author.tag}] : ${message.content}`); 
@@ -20,7 +23,7 @@ client.on('message', (message) => {
         // console.log(CMD_NAME);
         // console.log(args);
 
-        if (CMD_NAME === 'wakeup') {
+        if (CMD_NAME === 'test') {
             message.channel.send('Whats Up, Mahn...')
             message.reply('Bye, Let me take a Nap...')
         }
@@ -34,7 +37,6 @@ client.on('guildMemberAdd', guildMember => {
         "http://www.whykol.com/wp-content/uploads/2015/04/godfather-051.jpg",
         "http://www.whykol.com/wp-content/uploads/2015/04/godfather-050.jpg",
         "https://commentphotos.com/images/opengraph/CommentPhotos.com_1392031418.jpg",
-        "http://www.whykol.com/wp-content/uploads/2014/11/punjabi-house-163.jpg",
         "http://www.whykol.com/wp-content/uploads/2014/12/kilukkam-135.jpg",
         "https://i.ytimg.com/vi/7IHACqXvlyA/hqdefault.jpg",
         "http://www.whykol.com/wp-content/uploads/2015/06/rajamanikyam-001.jpg",
