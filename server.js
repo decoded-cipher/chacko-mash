@@ -8,6 +8,8 @@ client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
+    client.channels.cache.get(process.env.GENERAL_CHANNEL).send('👋')
+    client.channels.cache.get(process.env.GENERAL_CHANNEL).send(`Hey it\'s me ${client.user.username}.\nI\'m back online.\nSorry for the little nap! 😊`)
 });
 
 client.on('message', (message) => {
