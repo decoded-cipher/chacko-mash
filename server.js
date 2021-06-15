@@ -32,7 +32,11 @@ client.on('guildMemberAdd', guildMember => {
         "http://www.whykol.com/wp-content/uploads/2015/04/godfather-051.jpg",
         "http://www.whykol.com/wp-content/uploads/2015/04/godfather-050.jpg",
         "https://commentphotos.com/images/opengraph/CommentPhotos.com_1392031418.jpg",
-        "http://www.whykol.com/wp-content/uploads/2014/11/punjabi-house-163.jpg"
+        "http://www.whykol.com/wp-content/uploads/2014/11/punjabi-house-163.jpg",
+        "http://www.whykol.com/wp-content/uploads/2014/12/kilukkam-135.jpg",
+        "https://i.ytimg.com/vi/7IHACqXvlyA/hqdefault.jpg",
+        "http://www.whykol.com/wp-content/uploads/2015/06/rajamanikyam-001.jpg",
+        "https://user-images.githubusercontent.com/44474792/122104658-87b05180-ce35-11eb-8671-db90c37baead.jpg"
     ]
     var randomIndex = Math.floor(Math.random() * welcomeImages.length);
 
