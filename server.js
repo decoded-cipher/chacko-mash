@@ -8,8 +8,8 @@ client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
-    client.channels.cache.get(process.env.GENERAL_CHANNEL).send('👋')
-    client.channels.cache.get(process.env.GENERAL_CHANNEL).send(`Hey fellas, I\'m back online.\nSorry for the little nap!\n😊`, {
+    client.channels.cache.get(process.env.LOBBY_CHANNEL).send('👋')
+    client.channels.cache.get(process.env.LOBBY_CHANNEL).send(`Hey fellas, I\'m back online.\nSorry for the little nap!\n😊`, {
         files: ['http://www.whykol.com/wp-content/uploads/2014/11/punjabi-house-163.jpg']
     })
 });
@@ -44,7 +44,22 @@ client.on('guildMemberAdd', guildMember => {
     ]
     var randomIndex = Math.floor(Math.random() * welcomeImages.length);
 
-    guildMember.guild.channels.cache.get(process.env.GENERAL_CHANNEL).send(`Welcome <@${guildMember.user.id}> to Inovus Labs IEDC Discord Server!\n`, {
+    guildMember.guild.channels.cache.get(process.env.LOBBY_CHANNEL).send(`Welcome <@${guildMember.user.id}> to Inovus Labs IEDC Discord Server!\n`, {
         files: [`${welcomeImages[randomIndex]}`]
     })
+})
+
+
+client.on('message', (message) => {
+    if (message.content.startsWith(PREFIX)) {
+        var [CMD_NAME, args] = message.content.trim().substring(PREFIX.length).split(" _ ");
+
+        // console.log(CMD_NAME);
+        // console.log(args);
+
+        if (CMD_NAME === 'bot') {
+            // console.log((typeof(args)));
+            client.channels.cache.get(process.env.TARGET_CHANNEL).send(args);
+        }
+    }
 })
