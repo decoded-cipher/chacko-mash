@@ -52,14 +52,16 @@ client.on('guildMemberAdd', guildMember => {
 
 client.on('message', (message) => {
     if (message.content.startsWith(PREFIX)) {
-        var [CMD_NAME, args] = message.content.trim().substring(PREFIX.length).split(" _ ");
-
+        var [CMD_NAME, TARGET_CHANNEL, args] = message.content.trim().substring(PREFIX.length).split(" | ");
+        TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g,'')
+        
         // console.log(CMD_NAME);
+        // console.log(TARGET_CHANNEL);
         // console.log(args);
 
         if (CMD_NAME === 'bot') {
             // console.log((typeof(args)));
-            client.channels.cache.get(process.env.TARGET_CHANNEL).send(args);
+            client.channels.cache.get(TARGET_CHANNEL).send(args);
         }
     }
 })
