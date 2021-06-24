@@ -14,7 +14,7 @@ When someone joins the server, the bot welcomes them with a message along with a
 ![](https://user-images.githubusercontent.com/44474792/122117132-217efb00-ce44-11eb-8c5d-703a3f45cb0f.png)
 #
 ### Task: 3 - (Post Custom Messages in Channels)
-To post notifications/custom messages by the **InoBot** in specified channels using a PREFIX COMMAND.
+To post notifications/custom messages by the **InoBot** in any specified channel using a predefined command format.
 
 ![image](https://user-images.githubusercontent.com/44474792/123006968-14c74d80-d3d6-11eb-923b-8a12f1623ef2.png)
 ![image](https://user-images.githubusercontent.com/44474792/123007378-b9e22600-d3d6-11eb-9110-bdbba70eb401.png)
