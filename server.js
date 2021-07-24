@@ -10,7 +10,7 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
     client.channels.cache.get(process.env.LOBBY_CHANNEL).send('👋')
     client.channels.cache.get(process.env.LOBBY_CHANNEL).send(`Hey fellas, I\'m back online.\nSorry for the little nap!\n😊`, {
-        files: ['http://www.whykol.com/wp-content/uploads/2014/11/punjabi-house-163.jpg']
+        files: ['https://user-images.githubusercontent.com/44474792/126882345-a229f1c8-0ad6-455e-b2e4-eba1b580cb2e.jpg']
     })
 });
 
@@ -34,12 +34,12 @@ client.on('message', (message) => {
 client.on('guildMemberAdd', guildMember => {
 
     var welcomeImages = [
-        "http://www.whykol.com/wp-content/uploads/2015/04/godfather-051.jpg",
-        "http://www.whykol.com/wp-content/uploads/2015/04/godfather-050.jpg",
-        "https://commentphotos.com/images/opengraph/CommentPhotos.com_1392031418.jpg",
-        "http://www.whykol.com/wp-content/uploads/2014/12/kilukkam-135.jpg",
-        "https://i.ytimg.com/vi/7IHACqXvlyA/hqdefault.jpg",
-        "http://www.whykol.com/wp-content/uploads/2015/06/rajamanikyam-001.jpg",
+        "https://user-images.githubusercontent.com/44474792/126882769-2c86e588-8172-4c76-b41c-d8a0db5bdb56.png",
+        "https://user-images.githubusercontent.com/44474792/126882807-2f2646a8-c984-472f-b0b5-f7a063958b6a.jpg",
+        "https://user-images.githubusercontent.com/44474792/126882789-e8482f11-cb5b-4e8f-86ea-4ec5184c2db6.jpg",
+        "https://user-images.githubusercontent.com/44474792/126882790-76c2109a-df80-4971-8741-ae3b42c78b23.jpg",
+        "https://user-images.githubusercontent.com/44474792/126882794-1526d5e0-5acd-4abb-aad4-e25704562348.jpg",
+        "https://user-images.githubusercontent.com/44474792/126882802-8a014326-59dd-45ca-9c56-92aea2961428.jpg",
         "https://user-images.githubusercontent.com/44474792/122104658-87b05180-ce35-11eb-8671-db90c37baead.jpg"
     ]
     var randomIndex = Math.floor(Math.random() * welcomeImages.length);
