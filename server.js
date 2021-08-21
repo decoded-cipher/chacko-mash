@@ -17,16 +17,15 @@ client.on('ready', () => {
 
 client.on('message', (message) => {
     // console.log(`[${message.author.tag}] : ${message.content}`); 
-    if (message.content.startsWith(PREFIX)) {
-        var [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split("/\s+/");
+    if (message.content.startsWith('/test')) {
+        var [CMD_NAME, ...args] = message.content.trim().substring('/test'.length).split("/\s+/");
 
         // console.log(CMD_NAME);
         // console.log(args);
 
-        if (CMD_NAME === 'test') {
-            message.channel.send('Whats Up, Mahn...')
-            message.reply('Bye, Let me take a Nap...')
-        }
+        message.channel.send('Whats Up, Mahn...')
+        message.reply('Bye, Let me take a Nap...')
+
     }
 })
 
@@ -53,8 +52,8 @@ client.on('guildMemberAdd', guildMember => {
 client.on('message', (message) => {
     if (message.content.startsWith(PREFIX)) {
         var [CMD_NAME, TARGET_CHANNEL, args] = message.content.trim().substring(PREFIX.length).split(" | ");
-        TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g,'')
-        
+        TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g, '')
+
         // console.log(CMD_NAME);
         // console.log(TARGET_CHANNEL);
         // console.log(args);
@@ -65,3 +64,18 @@ client.on('message', (message) => {
         }
     }
 })
+
+
+client.on('message', (message) => {
+    if (message.guild && message.content.startsWith('/private')) {
+        
+        var text = message.content.slice('/private'.length);
+        message.guild.members.cache.forEach(member => {
+            // if (member.id != client.user.id && !member.user.bot) member.send(text)
+
+            if (member.id != client.user.id && !member.user.bot) member.send(text, {
+                files: ['https://user-images.githubusercontent.com/44474792/130306445-3b1a60f6-8d12-418e-91e9-88b9d85f9e6f.jpg']
+            })
+        });
+    }
+});
