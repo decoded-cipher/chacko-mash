@@ -19,5 +19,10 @@ To post notifications/custom messages by the **InoBot** in any specified channel
 ![image](https://user-images.githubusercontent.com/44474792/123298915-9df59600-d536-11eb-8643-994b38386310.png)
 ![image](https://user-images.githubusercontent.com/44474792/123298957-aa79ee80-d536-11eb-83ad-653459e80216.png)
 #
+### Task: 4 - (Direct Message to Server Members)
+To send direct messages to all the Server members (Notification, Special Day Wish or Information)
+
+![](https://user-images.githubusercontent.com/44474792/130309107-b2e34c31-2ae9-4110-b8f7-f40d7862d883.png)
+#
 
 **We're adding more and more features to the Bot, every week.** 😊
