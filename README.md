@@ -19,5 +19,11 @@ To post notifications/custom messages by the **InoBot** in any specified channel
 ![image](https://user-images.githubusercontent.com/44474792/123298915-9df59600-d536-11eb-8643-994b38386310.png)
 ![image](https://user-images.githubusercontent.com/44474792/123298957-aa79ee80-d536-11eb-83ad-653459e80216.png)
 #
+### Task: 4 - (User DM to Bot in a Channel)
+To collect the replies & messages from multiple Server Users into a Private channel for better Server Management.
+
+![image](https://user-images.githubusercontent.com/44474792/132072826-8c840ddf-23a3-4241-b9c6-7e39bb55cd8b.png)
+![image](https://user-images.githubusercontent.com/44474792/132072542-ddefcb90-d80c-4032-8d6e-fb02caac6357.png)
+#
 
 **We're adding more and more features to the Bot, every week.** 😊
