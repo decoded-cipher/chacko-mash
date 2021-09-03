@@ -65,3 +65,20 @@ client.on('message', (message) => {
         }
     }
 })
+
+
+client.on('message', (message) => {
+    if (message.guild === null) {
+        // console.log(message);
+        console.log(Date());
+        // client.channels.cache.get(process.env.TARGET_CHANNEL).send(message.content);
+
+        var newEmbed = new Discord.MessageEmbed()
+            .setColor('#4b9fc3')
+            // .setAuthor(message.author.username)
+            .setAuthor(message.author.username, `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`)
+            .setDescription(message.content)
+            .setFooter(Date())
+        client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
+    }
+})
