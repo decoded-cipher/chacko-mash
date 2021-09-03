@@ -4,16 +4,19 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 var PREFIX = "$"
 
+client.commands = new Discord.Collection()
+var command = require("./private_message")
+client.commands.set(command.name, command)
+
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
-    client.channels.cache.get(process.env.LOBBY_CHANNEL).send('👋')
-    client.channels.cache.get(process.env.LOBBY_CHANNEL).send(`Hey fellas, I\'m back online.\nSorry for the little nap!\n😊`, {
-        files: ['https://user-images.githubusercontent.com/44474792/126882345-a229f1c8-0ad6-455e-b2e4-eba1b580cb2e.jpg']
-    })
+    // client.channels.cache.get(process.env.LOBBY_CHANNEL).send('👋')
+    // client.channels.cache.get(process.env.LOBBY_CHANNEL).send(`Hey fellas, I\'m back online.\nSorry for the little nap!\n😊`, {
+    //     files: ['https://user-images.githubusercontent.com/44474792/126882345-a229f1c8-0ad6-455e-b2e4-eba1b580cb2e.jpg']
+    // })
 });
-
 
 client.on('message', (message) => {
     // console.log(`[${message.author.tag}] : ${message.content}`); 
@@ -56,7 +59,7 @@ client.on('message', (message) => {
 
         // console.log(CMD_NAME);
         // console.log(TARGET_CHANNEL);
-        // console.log(args);
+        console.log(args);
 
         if (CMD_NAME === 'bot') {
             // console.log((typeof(args)));
@@ -66,16 +69,30 @@ client.on('message', (message) => {
 })
 
 
+
 client.on('message', (message) => {
     if (message.guild && message.content.startsWith('/private')) {
-        
-        var text = message.content.slice('/private'.length);
-        message.guild.members.cache.forEach(member => {
-            // if (member.id != client.user.id && !member.user.bot) member.send(text)
 
-            if (member.id != client.user.id && !member.user.bot) member.send(text, {
-                files: ['https://user-images.githubusercontent.com/44474792/130306445-3b1a60f6-8d12-418e-91e9-88b9d85f9e6f.jpg']
-            })
-        });
+        client.commands.get('/private').execute(message, Discord)
+
     }
 });
+
+
+
+
+client.on('message', (message) => {
+    if (message.guild === null) {
+        // console.log(message);
+        console.log(Date());
+        // client.channels.cache.get(process.env.TARGET_CHANNEL).send(message.content);
+
+        var newEmbed = new Discord.MessageEmbed()
+            .setColor('#4b9fc3')
+            // .setAuthor(message.author.username)
+            .setAuthor(message.author.username, `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`)
+            .setDescription(message.content)
+            .setFooter(Date())
+        client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
+    }
+})
