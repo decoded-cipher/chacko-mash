@@ -23,6 +23,11 @@ To post notifications/custom messages by the **InoBot** in any specified channel
 To send direct messages to all the Server members (Notification, Special Day Wish or Information)
 
 ![](https://user-images.githubusercontent.com/44474792/130309107-b2e34c31-2ae9-4110-b8f7-f40d7862d883.png)
+### Task: 4 - (User DM to Bot in a Channel)
+To collect the replies & messages from multiple Server Users into a Private channel for better Server Management.
+
+![image](https://user-images.githubusercontent.com/44474792/132072826-8c840ddf-23a3-4241-b9c6-7e39bb55cd8b.png)
+![image](https://user-images.githubusercontent.com/44474792/132072542-ddefcb90-d80c-4032-8d6e-fb02caac6357.png)
 #
 
 **We're adding more and more features to the Bot, every week.** 😊
