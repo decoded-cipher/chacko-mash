@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const Discord = require('discord.js');
+const { name } = require('./private_message');
 const client = new Discord.Client();
 var PREFIX = "$"
 
@@ -80,6 +81,8 @@ client.on('message', (message) => {
     }
 });
 
+
+
 client.on('message', (message) => {
     if (message.guild && message.content.startsWith('/dm')) {
 
@@ -96,6 +99,43 @@ client.on('message', (message) => {
                 }
             );
         });
+
+    }
+});
+
+
+
+
+
+client.on('message', (message) => {
+    if (message.guild && message.content.startsWith('/channel')) {
+
+        if (message.member.roles.cache.find(role => role.name === 'fellow')) {
+            var fellowRole = message.guild.roles.cache.find(role => role.name === 'fellow')
+
+            message.guild.channels
+                .create('channel-' + Date.now(), {
+                    type : 'text',
+                    permissionOverwrites: [
+                        {
+                            id: fellowRole.id,
+                            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'],
+                        },
+                        {
+                            id: message.guild.roles.everyone,
+                            deny: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+                        }
+                     ]
+                })
+                .then((channel) => {
+                    channel.setParent('843459927393697831')
+                })
+                .catch(console.error);
+
+        } else {
+            message.reply('You do not have permissions to run this command.')
+        }
+
     }
 });
 
