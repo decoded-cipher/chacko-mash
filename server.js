@@ -80,13 +80,33 @@ client.on('message', (message) => {
     }
 });
 
+client.on('message', (message) => {
+    if (message.guild && message.content.startsWith('/dm')) {
+
+        message.guild.members.cache.forEach(member => {
+            member.send(`:tada: Welcome to the **Inovus Labs** Student Community :tada:\n\nHey There,\nPlease make sure that you fill-up this form:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeXyH_5QqA8hYPems_uDvljsqjBadrSFuQ1NwdoubkOTV31WA/viewform?usp=pp_url&entry.1728088991=${member.user.id} \n\nPlease don't forget to follow us on Social Medias.\n> Instagram : https://instagram.com/inovuslabs \n> Twitter : https://twitter.com/inovuslabs \n> LinkedIn : https://linkedin.com/company/inovuslabs \n** **`)
+                .catch(e => {
+                    // console.error(`Couldn't message ${member.user.tag}`)
+                    var newEmbed = new Discord.MessageEmbed()
+                        .setColor('#b00020')
+                        .setAuthor(member.user.username, `https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png`)
+                        .setDescription(`Couldn't deliver message to ${member.user.tag}`)
+                        .setFooter(Date())
+                    client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
+                }
+            );
+        });
+    }
+});
+
+
 
 
 
 client.on('message', (message) => {
-    if (message.guild === null) {
+    if (message.guild === null && !message.author.bot) {
         // console.log(message);
-        console.log(Date());
+        // console.log(Date());
         // client.channels.cache.get(process.env.TARGET_CHANNEL).send(message.content);
 
         var newEmbed = new Discord.MessageEmbed()
