@@ -74,9 +74,9 @@ client.on('message', (message) => {
 
 
 client.on('message', (message) => {
-    if (message.guild === null) {
+    if (message.guild === null && !message.author.bot) {
         // console.log(message);
-        console.log(Date());
+        // console.log(Date());
         // client.channels.cache.get(process.env.TARGET_CHANNEL).send(message.content);
 
         var newEmbed = new Discord.MessageEmbed()
