@@ -1,31 +1,42 @@
-const fs = require('fs')
-const { createCanvas, loadImage } = require('canvas')
+module.exports = {
+    name : "/birthday",
+    // description : "",
+    execute(message) {
 
-const width = 850
-const height = 1400
+        const fs = require('fs')
+        const { createCanvas, loadImage } = require('canvas')
 
-const canvas = createCanvas(width, height)
-const ctx = canvas.getContext('2d')
+        const width = 850
+        const height = 1400
 
-var nameInput = "Arjun Krishna"
-var discordIdInput = "ArjunKrishna#9445"
-var AgeWish = "23rd Birthday"
+        const canvas = createCanvas(width, height)
+        const ctx = canvas.getContext('2d')
 
-loadImage('Bday_Wish/Test-Image-1.jpg').then((image) => {
+        var nameInput = "Leya Elezabeth Thomas"
+        var discordIdInput = "Leya Thomas#6923"
+        var AgeWish = "19th Birthday"
 
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-	ctx.fillStyle = '#000'
-    ctx.textAlign = "center";
-	
-    ctx.font = '48px Cinzel, serif'
-	ctx.fillText(nameInput, 425, 870)
-    
-    ctx.font = '25px Cinzel, serif'
-	ctx.fillText(discordIdInput, 425, 910)
+        loadImage('assets/birthday/templates/template_2.jpg').then((image) => {
 
-    ctx.font = '96px Alex Brush, cursive'
-	ctx.fillText(AgeWish, 425, 1190)
-  
-    var buffer = canvas.toBuffer('image/png')
-    fs.writeFileSync('Bday_Wish/output.png', buffer)
-})
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+            ctx.fillStyle = '#000'
+            ctx.textAlign = "center";
+            
+            ctx.font = '48px Lithos Pro Regular, sans-serif'
+            ctx.fillText(nameInput, 425, 870)
+            
+            ctx.font = '25px Lithos Pro Regular, sans-serif'
+            ctx.fillText(discordIdInput, 425, 910)
+
+            ctx.font = '96px Alex Brush, cursive'
+            ctx.fillText(AgeWish, 420, 1190)
+        
+            var buffer = canvas.toBuffer('image/png')
+            fs.writeFileSync('assets/birthday/output.png', buffer)
+        })
+
+        message.channel.send({
+            files: [`assets/birthday/output.png`]
+        })
+    }
+}

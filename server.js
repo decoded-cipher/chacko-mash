@@ -10,6 +10,9 @@ client.commands = new Discord.Collection()
 var helpCommand = require("./help-command")
 client.commands.set(helpCommand.name, helpCommand)
 
+var birthday = require("./birthday")
+client.commands.set(birthday.name, birthday)
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
     client.channels.cache.get(process.env.LOBBY_CHANNEL).send('👋')
@@ -96,6 +99,18 @@ client.on('message', (message) => {
     if (message.guild && message.content.startsWith('/help')) {
 
         client.commands.get('/help-command').execute(message, Discord)
+
+    }
+});
+
+
+
+
+
+client.on('message', (message) => {
+    if (message.guild && message.content.startsWith('/bday')) {
+
+        client.commands.get('/birthday').execute(message)
 
     }
 });
