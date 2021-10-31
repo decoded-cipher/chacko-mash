@@ -84,3 +84,7 @@ client.on('message', (message) => {
         client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
     }
 })
+
+
+
+
