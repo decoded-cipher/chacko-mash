@@ -6,6 +6,10 @@ var PREFIX = "$"
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 
+client.commands = new Discord.Collection()
+var helpCommand = require("./help-command")
+client.commands.set(helpCommand.name, helpCommand)
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
     client.channels.cache.get(process.env.LOBBY_CHANNEL).send('👋')
@@ -84,3 +88,14 @@ client.on('message', (message) => {
         client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
     }
 })
+
+
+
+
+client.on('message', (message) => {
+    if (message.guild && message.content.startsWith('/help')) {
+
+        client.commands.get('/help-command').execute(message, Discord)
+
+    }
+});
