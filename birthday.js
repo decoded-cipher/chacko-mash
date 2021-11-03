@@ -1,7 +1,7 @@
 module.exports = {
     name : "/birthday",
     // description : "",
-    execute(message) {
+    execute(client, TARGET_CHANNEL, args) {
 
         const fs = require('fs')
         const { createCanvas, loadImage } = require('canvas')
@@ -35,8 +35,9 @@ module.exports = {
             fs.writeFileSync('assets/birthday/output.png', buffer)
         })
 
-        message.channel.send({
+        client.channels.cache.get(TARGET_CHANNEL).send({
             files: [`assets/birthday/output.png`]
         })
+        console.log(args);
     }
 }

@@ -72,6 +72,15 @@ client.on('message', (message) => {
             // console.log((typeof(args)));
             client.channels.cache.get(TARGET_CHANNEL).send(args);
         }
+
+        else if (CMD_NAME === 'bday') {
+            // console.log(args);
+            client.commands.get('/birthday').execute(client, TARGET_CHANNEL, args)
+        }
+
+        else {
+            message.reply('\nI think you are using the commands in an invalid format.\nTo check-out the command formats, try: **/help**')
+        }
     }
 })
 
@@ -107,10 +116,10 @@ client.on('message', (message) => {
 
 
 
-client.on('message', (message) => {
-    if (message.guild && message.content.startsWith('/bday')) {
+// client.on('message', (message) => {
+//     if (message.guild && message.content.startsWith('/bday')) {
 
-        client.commands.get('/birthday').execute(message)
+//         client.commands.get('/birthday').execute(message)
 
-    }
-});
+//     }
+// });
