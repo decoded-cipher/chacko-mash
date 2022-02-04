@@ -7,6 +7,9 @@ var PREFIX = "$"
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 client.commands = new Discord.Collection()
+
+var fb = require('./firebase.js')
+
 var helpCommand = require("./help-command")
 client.commands.set(helpCommand.name, helpCommand)
 

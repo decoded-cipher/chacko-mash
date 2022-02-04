@@ -12,11 +12,11 @@ module.exports = {
         const canvas = createCanvas(width, height)
         const ctx = canvas.getContext('2d')
 
-        var nameInput = "Leya Elezabeth Thomas"
-        var discordIdInput = "Leya Thomas#6923"
-        var AgeWish = "19th Birthday"
+        var nameInput = "Arjun Krishna"
+        var discordIdInput = "Arjun Krishna#9445"
+        var AgeWish = "23rd Birthday"
 
-        loadImage('assets/birthday/templates/template_2.jpg').then((image) => {
+        loadImage('assets/birthday/templates/template_3.jpg').then((image) => {
 
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
             ctx.fillStyle = '#000'
