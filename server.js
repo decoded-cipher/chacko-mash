@@ -5,16 +5,29 @@ const client = new Discord.Client();
 var PREFIX = "$"
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
-
 client.commands = new Discord.Collection()
 
-var fb = require('./firebase.js')
+
+// ----- Firebase Config Start -----
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase-admin.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: process.env.FIREBASE_DATABASE_URL
+});
+
+var database = admin.database()
+var memberData = database.ref(process.env.FIREBASE_DATABASE_PATH)
+// ----- Firebase Config End -----
+
 
 var helpCommand = require("./help-command")
 client.commands.set(helpCommand.name, helpCommand)
 
 var birthday = require("./birthday")
 client.commands.set(birthday.name, birthday)
+
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
@@ -78,7 +91,16 @@ client.on('message', (message) => {
 
         else if (CMD_NAME === 'bday') {
             // console.log(args);
-            client.commands.get('/birthday').execute(client, TARGET_CHANNEL, args)
+            memberData.orderByChild("Discord User ID").equalTo(args).on('value', async snapshot => {
+                
+                var bDayData = await snapshot.val();
+                var DiscordUserData = await client.users.fetch(args);
+                
+                // console.log(bDayData);
+                // console.log(DiscordUserData);
+                
+                client.commands.get('/birthday').execute(client, TARGET_CHANNEL, bDayData, DiscordUserData)
+            });
         }
 
         else {

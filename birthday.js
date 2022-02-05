@@ -1,7 +1,23 @@
 module.exports = {
     name : "/birthday",
     // description : "",
-    execute(client, TARGET_CHANNEL, args) {
+    execute(client, TARGET_CHANNEL, bDayData, DiscordUserData) {
+
+        for(let key in bDayData){
+            // console.log(key);
+        
+            for(let property in bDayData[key]){
+                // console.log(bDayData[key][property]);
+                
+                var nameInput = bDayData[key]['Full Name']
+                var discordIdInput = DiscordUserData.username + '#' + DiscordUserData.discriminator
+                var AgeWish = "23rd Birthday"
+                
+            }
+        }
+        console.log(nameInput);
+        console.log(discordIdInput);
+        console.log(AgeWish);
 
         const fs = require('fs')
         const { createCanvas, loadImage } = require('canvas')
@@ -12,11 +28,8 @@ module.exports = {
         const canvas = createCanvas(width, height)
         const ctx = canvas.getContext('2d')
 
-        var nameInput = "Arjun Krishna"
-        var discordIdInput = "Arjun Krishna#9445"
-        var AgeWish = "23rd Birthday"
 
-        loadImage('assets/birthday/templates/template_3.jpg').then((image) => {
+        loadImage('assets/birthday/templates/template_2.jpg').then((image) => {
 
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
             ctx.fillStyle = '#000'
@@ -38,6 +51,8 @@ module.exports = {
         client.channels.cache.get(TARGET_CHANNEL).send({
             files: [`assets/birthday/output.png`]
         })
-        console.log(args);
+                
+        // console.log(DiscordUserData);
+        // console.log(bDayData);
     }
 }
