@@ -5,10 +5,29 @@ const client = new Discord.Client();
 var PREFIX = "$"
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
-
 client.commands = new Discord.Collection()
+
+
+// ----- Firebase Config Start -----
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase-admin.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: process.env.FIREBASE_DATABASE_URL
+});
+
+var database = admin.database()
+var memberData = database.ref(process.env.FIREBASE_DATABASE_PATH)
+// ----- Firebase Config End -----
+
+
 var helpCommand = require("./help-command")
 client.commands.set(helpCommand.name, helpCommand)
+
+var birthday = require("./birthday")
+client.commands.set(birthday.name, birthday)
+
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.username}!`);
@@ -69,6 +88,24 @@ client.on('message', (message) => {
             // console.log((typeof(args)));
             client.channels.cache.get(TARGET_CHANNEL).send(args);
         }
+
+        else if (CMD_NAME === 'bday') {
+            // console.log(args);
+            memberData.orderByChild("Discord User ID").equalTo(args).on('value', async snapshot => {
+                
+                var bDayData = await snapshot.val();
+                var DiscordUserData = await client.users.fetch(args);
+                
+                // console.log(bDayData);
+                // console.log(DiscordUserData);
+                
+                client.commands.get('/birthday').execute(client, TARGET_CHANNEL, bDayData, DiscordUserData)
+            });
+        }
+
+        else {
+            message.reply('\nI think you are using the commands in an invalid format.\nTo check-out the command formats, try: **/help**')
+        }
     }
 })
 
@@ -99,3 +136,15 @@ client.on('message', (message) => {
 
     }
 });
+
+
+
+
+
+// client.on('message', (message) => {
+//     if (message.guild && message.content.startsWith('/bday')) {
+
+//         client.commands.get('/birthday').execute(message)
+
+//     }
+// });
