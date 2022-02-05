@@ -13,11 +13,15 @@ module.exports = {
                 var discordIdInput = DiscordUserData.username + '#' + DiscordUserData.discriminator
                 var AgeWish = "23rd Birthday"
                 
+                var avatarImage = `https://cdn.discordapp.com/avatars/${DiscordUserData.id}/${DiscordUserData.avatar}.png`
+                var gender = bDayData[key]['Gender']
+                // var discordAvatar = DiscordUserData.username
             }
         }
         console.log(nameInput);
         console.log(discordIdInput);
         console.log(AgeWish);
+        console.log(avatarImage);
 
         const fs = require('fs')
         const { createCanvas, loadImage } = require('canvas')
@@ -28,8 +32,10 @@ module.exports = {
         const canvas = createCanvas(width, height)
         const ctx = canvas.getContext('2d')
 
+        var designTemplate = ''
+        gender == 'Male' ? designTemplate = 'template_3.jpg' : designTemplate = 'template_2.jpg';
 
-        loadImage('assets/birthday/templates/template_2.jpg').then((image) => {
+        loadImage(`assets/birthday/templates/${designTemplate}`).then((image) => {
 
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
             ctx.fillStyle = '#000'
@@ -52,7 +58,7 @@ module.exports = {
             files: [`assets/birthday/output.png`]
         })
                 
-        // console.log(DiscordUserData);
+        console.log(DiscordUserData);
         // console.log(bDayData);
     }
 }
