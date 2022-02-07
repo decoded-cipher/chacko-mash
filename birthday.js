@@ -63,9 +63,18 @@ module.exports = {
             await loadImage(`assets/birthday/templates/${designTemplate}`).then(async (image) => {
 
                 ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-                ctx.fillStyle = "#39393B";
-                ctx.fillRect(264, 472, 323, 323);
+
+                ctx.save();
+                ctx.beginPath();
+
+                ctx.arc(425.5, 633.5, 152.5, 0, 2 * Math.PI, false);
+                ctx.clip();
                 ctx.drawImage(avatar, 273, 481, 305, 305)
+                ctx.restore();
+
+                ctx.lineWidth = 8;
+                ctx.strokeStyle = '#39393B';
+                ctx.stroke();
 
                 ctx.fillStyle = '#000'
                 ctx.textAlign = "center";
