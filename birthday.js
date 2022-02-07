@@ -44,10 +44,10 @@ module.exports = {
         // console.log(avatarImage);
 
         const fs = require('fs')
-        const {
-            createCanvas,
-            loadImage
-        } = require('canvas')
+        const { registerFont, createCanvas, loadImage } = require('canvas')
+
+        registerFont('./assets/fonts/LithosPro-Regular.otf', { family: 'Lithos Pro Regular' })
+        registerFont('./assets/fonts/alex-brush.regular.ttf', { family: 'Alex Brush' })
 
         const width = 850
         const height = 1400
