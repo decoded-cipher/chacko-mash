@@ -12,7 +12,7 @@ module.exports = {
         var bdayWish = new Discord.MessageEmbed()
             .setColor('#ff2cda')
             .setTitle(':birthday:   Generate Birthday Wish')
-            .setDescription('**$bday | <#channel_id> | <@user_id>**\n\nTo post a birthday wish by **InoBot** in any specified channel. This will also generate a custom unique **Birthday Wish Card**.')
+            .setDescription('**$bday | <#channel_id> | <user_id>**\n\nTo post a birthday wish by **InoBot** in any specified channel. This will also generate a custom unique **Birthday Wish Card**.')
 
         message.channel.send(bdayWish)
     }
