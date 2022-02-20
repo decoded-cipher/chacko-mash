@@ -22,10 +22,10 @@ var memberData = database.ref(process.env.FIREBASE_DATABASE_PATH)
 // ----- Firebase Config End -----
 
 
-var ready = require("./onReady")
-client.commands.set(ready.name, ready)
+var onReady = require("./onReady")
+client.commands.set(onReady.name, onReady)
 
-var helpCommand = require("./help-command")
+var helpCommand = require("./helpCommand")
 client.commands.set(helpCommand.name, helpCommand)
 
 var birthday = require("./birthday")
@@ -37,7 +37,7 @@ client.commands.set(roles.name, roles)
 
 
 client.on('ready', () => {
-    client.commands.get('/ready').execute(client)
+    client.commands.get('/onReady').execute(client)
 });
 
 
@@ -135,7 +135,7 @@ client.on('message', (message) => {
 client.on('message', (message) => {
     if (message.guild && message.content.startsWith('/help')) {
 
-        client.commands.get('/help-command').execute(message, Discord)
+        client.commands.get('/helpCommand').execute(message, Discord)
 
     }
 });

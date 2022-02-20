@@ -1,5 +1,5 @@
 module.exports = {
-    name : "/ready",
+    name : "/onReady",
     // description : "",
     execute(client) {
 
