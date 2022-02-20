@@ -1,5 +1,5 @@
 module.exports = {
-    name : "/help-command",
+    name : "/helpCommand",
     // description : "",
     execute(message, Discord) {
 

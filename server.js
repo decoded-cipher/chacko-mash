@@ -22,19 +22,22 @@ var memberData = database.ref(process.env.FIREBASE_DATABASE_PATH)
 // ----- Firebase Config End -----
 
 
-var helpCommand = require("./help-command")
+var onReady = require("./onReady")
+client.commands.set(onReady.name, onReady)
+
+var helpCommand = require("./helpCommand")
 client.commands.set(helpCommand.name, helpCommand)
 
 var birthday = require("./birthday")
 client.commands.set(birthday.name, birthday)
 
+var roles = require("./roles")
+client.commands.set(roles.name, roles)
+
+
 
 client.on('ready', () => {
-    console.log(`Logged in as ${client.user.username}!`);
-    client.channels.cache.get(process.env.LOBBY_CHANNEL).send('👋')
-    client.channels.cache.get(process.env.LOBBY_CHANNEL).send(`Hey fellas, I\'m back online.\nSorry for the little nap!\n😊`, {
-        files: ['https://user-images.githubusercontent.com/44474792/126882345-a229f1c8-0ad6-455e-b2e4-eba1b580cb2e.jpg']
-    })
+    client.commands.get('/onReady').execute(client)
 });
 
 
@@ -132,19 +135,11 @@ client.on('message', (message) => {
 client.on('message', (message) => {
     if (message.guild && message.content.startsWith('/help')) {
 
-        client.commands.get('/help-command').execute(message, Discord)
+        client.commands.get('/helpCommand').execute(message, Discord)
 
     }
 });
 
 
 
-
-
-// client.on('message', (message) => {
-//     if (message.guild && message.content.startsWith('/bday')) {
-
-//         client.commands.get('/birthday').execute(message)
-
-//     }
-// });
+// client.commands.get('/roles').execute(client)
