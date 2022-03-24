@@ -94,6 +94,10 @@ module.exports = {
 
         })
 
+        await client.channels.cache.get(TARGET_CHANNEL).send(`“This birthday, I wish you abundant happiness and love. May all your dreams turn into reality and may lady luck visit your home today. Happy birthday <@${DiscordUserData.id}>.”`)
+
+        await client.channels.cache.get(TARGET_CHANNEL).send(`https://tenor.com/view/simhavalan-menon-jagathy-malayalam-happy-birthday-santhosha-janmadinam-kuttikku-gif-17580455`)
+
         await client.channels.cache.get(TARGET_CHANNEL).send({
             files: [`assets/birthday/output.png`]
         })
