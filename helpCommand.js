@@ -13,7 +13,12 @@ module.exports = {
             .setColor('#ff2cda')
             .setTitle(':birthday:   Generate Birthday Wish')
             .setDescription('**$bday | <#channel_id> | <user_id>**\n\nTo post a birthday wish by **InoBot** in any specified channel. This will also generate a custom unique **Birthday Wish Card**.')
-
         message.channel.send(bdayWish)
+
+        var assignRole = new Discord.MessageEmbed()
+            .setColor('#ff702c')
+            .setTitle(':crown:   Assign Server Roles')
+            .setDescription('**$role | <@role_id> | <@user_01> <@user_02> **\n\nTo assign a role to any no: of users at the same time by **InoBot**.  This command will notify the role assignment in <#883465290556530748> channel & DM respective users about their new role.')
+        message.channel.send(assignRole)
     }
 } 

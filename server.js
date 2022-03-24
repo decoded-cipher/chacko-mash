@@ -13,8 +13,8 @@ var admin = require("firebase-admin");
 var serviceAccount = require("./firebase-admin.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: process.env.FIREBASE_DATABASE_URL
 });
 
 var database = admin.database()
@@ -78,39 +78,49 @@ client.on('guildMemberAdd', guildMember => {
 })
 
 
+
 client.on('message', (message) => {
     if (message.content.startsWith(PREFIX)) {
-        var [CMD_NAME, TARGET_CHANNEL, args] = message.content.trim().substring(PREFIX.length).split(" | ");
-        TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g,'')
-        
-        // console.log(CMD_NAME);
-        // console.log(TARGET_CHANNEL);
-        // console.log(args);
 
-        if (CMD_NAME === 'bot') {
-            // console.log((typeof(args)));
-            client.channels.cache.get(TARGET_CHANNEL).send(args);
-        }
+        if (message.member.roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_02)) {
 
-        else if (CMD_NAME === 'bday') {
+            var [CMD_NAME, TARGET_CHANNEL, args] = message.content.trim().substring(PREFIX.length).split(" | ");
+            TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g, '')
+
+            // console.log(CMD_NAME);
+            // console.log(TARGET_CHANNEL);
             // console.log(args);
-            memberData.orderByChild("Discord User ID").equalTo(args).on('value', async snapshot => {
-                
-                var bDayData = await snapshot.val();
-                var DiscordUserData = await client.users.fetch(args);
-                
-                // console.log(bDayData);
-                // console.log(DiscordUserData);
-                
-                client.commands.get('/birthday').execute(client, TARGET_CHANNEL, bDayData, DiscordUserData)
-            });
-        }
 
-        else {
-            message.reply('\nI think you are using the commands in an invalid format.\nTo check-out the command formats, try: **/help**')
+            if (CMD_NAME === 'bot') {
+                // console.log((typeof(args)));
+                client.channels.cache.get(TARGET_CHANNEL).send(args);
+
+            } else if (CMD_NAME === 'bday') {
+                // console.log(args);
+                memberData.orderByChild("Discord User ID").equalTo(args).on('value', async snapshot => {
+                    var bDayData = await snapshot.val();
+                    var DiscordUserData = await client.users.fetch(args);
+                    // console.log(bDayData);
+                    // console.log(DiscordUserData);
+                    client.commands.get('/birthday').execute(client, TARGET_CHANNEL, bDayData, DiscordUserData)
+                });
+
+            } else if (CMD_NAME === 'role') {
+                // console.log(TARGET_CHANNEL);
+                // console.log(args);
+                client.commands.get('/roles').execute(client, message, TARGET_CHANNEL, args)
+                
+            } else {
+                message.reply('\nI think you are using the commands in an invalid format.\nTo check-out the command formats, try: **/help**')
+            }
+
+
+        } else {
+            message.reply(`\nYou are not allowed to use this command.\nPlease contact <@&${process.env.PRIORITY_ROLE_01}> for more details.`)
         }
     }
 })
+
 
 
 client.on('message', (message) => {
