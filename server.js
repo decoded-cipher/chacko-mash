@@ -82,7 +82,7 @@ client.on('guildMemberAdd', guildMember => {
 client.on('message', (message) => {
     if (message.content.startsWith(PREFIX)) {
 
-        if (message.member.roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_02)) {
+        if (message.member.roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
 
             var [CMD_NAME, TARGET_CHANNEL, args] = message.content.trim().substring(PREFIX.length).split(" | ");
             TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g, '')
