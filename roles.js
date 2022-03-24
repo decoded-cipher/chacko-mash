@@ -15,6 +15,7 @@ module.exports = {
 
             // user.roles.add(role);
             message.guild.member(user).roles.add(role);
+            client.channels.cache.get(process.env.TARGET_CHANNEL).send(`<@${user}> has been given the role <@&${role.id}>`);
         });
     }
 } 
