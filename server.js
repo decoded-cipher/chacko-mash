@@ -34,48 +34,26 @@ client.commands.set(birthday.name, birthday)
 var roles = require("./roles")
 client.commands.set(roles.name, roles)
 
+var welcome = require("./welcome")
+client.commands.set(welcome.name, welcome)
+
+var dmUser = require("./dmUser")
+client.commands.set(dmUser.name, dmUser)
 
 
 client.on('ready', () => {
     client.commands.get('/onReady').execute(client)
 });
 
+client.on('guildMemberAdd', guildMember => {
+    client.commands.get('/welcome').execute(client, guildMember)
+})
 
 client.on('message', (message) => {
-    // console.log(`[${message.author.tag}] : ${message.content}`); 
-    if (message.content.startsWith(PREFIX)) {
-        var [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split("/\s+/");
-
-        // console.log(CMD_NAME);
-        // console.log(args);
-
-        if (CMD_NAME === 'test') {
-            message.channel.send('Whats Up, Mahn...')
-            message.reply('Bye, Let me take a Nap...')
-        }
+    if (message.guild && message.content.startsWith('/help')) {
+        client.commands.get('/helpCommand').execute(message, Discord)
     }
-})
-
-
-client.on('guildMemberAdd', guildMember => {
-
-    var welcomeImages = [
-        "https://user-images.githubusercontent.com/44474792/126882769-2c86e588-8172-4c76-b41c-d8a0db5bdb56.png",
-        "https://user-images.githubusercontent.com/44474792/126882807-2f2646a8-c984-472f-b0b5-f7a063958b6a.jpg",
-        "https://user-images.githubusercontent.com/44474792/126882789-e8482f11-cb5b-4e8f-86ea-4ec5184c2db6.jpg",
-        "https://user-images.githubusercontent.com/44474792/126882790-76c2109a-df80-4971-8741-ae3b42c78b23.jpg",
-        "https://user-images.githubusercontent.com/44474792/126882794-1526d5e0-5acd-4abb-aad4-e25704562348.jpg",
-        "https://user-images.githubusercontent.com/44474792/126882802-8a014326-59dd-45ca-9c56-92aea2961428.jpg",
-        "https://user-images.githubusercontent.com/44474792/122104658-87b05180-ce35-11eb-8671-db90c37baead.jpg"
-    ]
-    var randomIndex = Math.floor(Math.random() * welcomeImages.length);
-
-    guildMember.guild.channels.cache.get(process.env.LOBBY_CHANNEL).send(`Welcome <@${guildMember.user.id}> to Inovus Labs IEDC Discord Server!\n`, {
-        files: [`${welcomeImages[randomIndex]}`]
-    });
-
-    client.users.cache.get(guildMember.user.id).send(`:tada: Welcome to the **Inovus Labs** Student Community :tada:\n\nHey There,\nPlease make sure that you fill-up this form:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeXyH_5QqA8hYPems_uDvljsqjBadrSFuQ1NwdoubkOTV31WA/viewform?usp=pp_url&entry.1728088991=${guildMember.user.id} \n\nPlease don't forget to follow us on Social Medias.\n> Instagram : https://instagram.com/inovuslabs \n> Twitter : https://twitter.com/inovuslabs \n> LinkedIn : https://linkedin.com/company/inovuslabs \n** **`);
-})
+});
 
 
 
@@ -85,11 +63,7 @@ client.on('message', (message) => {
         if (message.member.roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
 
             var [CMD_NAME, TARGET_CHANNEL, args] = message.content.trim().substring(PREFIX.length).split(" | ");
-            TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g, '')
-
-            // console.log(CMD_NAME);
-            // console.log(TARGET_CHANNEL);
-            // console.log(args);
+            TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9\s]/g, '')
 
             if (CMD_NAME === 'bot') {
                 // console.log((typeof(args)));
@@ -110,10 +84,14 @@ client.on('message', (message) => {
                 // console.log(args);
                 client.commands.get('/roles').execute(client, message, TARGET_CHANNEL, args)
                 
+            } else if (CMD_NAME === 'dm') {
+                // console.log(TARGET_CHANNEL);
+                // console.log(args);
+                client.commands.get('/dmUser').execute(client, message, TARGET_CHANNEL, args)
+                
             } else {
                 message.reply('\nI think you are using the commands in an invalid format.\nTo check-out the command formats, try: **/help**')
             }
-
 
         } else {
             message.reply(`\nYou are not allowed to use this command.\nPlease contact <@&${process.env.PRIORITY_ROLE_01}> for more details.`)
@@ -125,9 +103,6 @@ client.on('message', (message) => {
 
 client.on('message', (message) => {
     if (message.guild === null && !message.author.bot) {
-        // console.log(message);
-        // console.log(Date());
-        // client.channels.cache.get(process.env.TARGET_CHANNEL).send(message.content);
 
         var newEmbed = new Discord.MessageEmbed()
             .setColor('#4b9fc3')
@@ -138,18 +113,3 @@ client.on('message', (message) => {
         client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
     }
 })
-
-
-
-
-client.on('message', (message) => {
-    if (message.guild && message.content.startsWith('/help')) {
-
-        client.commands.get('/helpCommand').execute(message, Discord)
-
-    }
-});
-
-
-
-// client.commands.get('/roles').execute(client)
