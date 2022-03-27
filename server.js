@@ -37,6 +37,8 @@ client.commands.set(roles.name, roles)
 var welcome = require("./welcome")
 client.commands.set(welcome.name, welcome)
 
+var dmUser = require("./dmUser")
+client.commands.set(dmUser.name, dmUser)
 
 
 client.on('ready', () => {
@@ -61,7 +63,7 @@ client.on('message', (message) => {
         if (message.member.roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
 
             var [CMD_NAME, TARGET_CHANNEL, args] = message.content.trim().substring(PREFIX.length).split(" | ");
-            TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9]/g, '')
+            TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9\s]/g, '')
 
             if (CMD_NAME === 'bot') {
                 // console.log((typeof(args)));
@@ -81,6 +83,11 @@ client.on('message', (message) => {
                 // console.log(TARGET_CHANNEL);
                 // console.log(args);
                 client.commands.get('/roles').execute(client, message, TARGET_CHANNEL, args)
+                
+            } else if (CMD_NAME === 'dm') {
+                // console.log(TARGET_CHANNEL);
+                // console.log(args);
+                client.commands.get('/dmUser').execute(client, message, TARGET_CHANNEL, args)
                 
             } else {
                 message.reply('\nI think you are using the commands in an invalid format.\nTo check-out the command formats, try: **/help**')
