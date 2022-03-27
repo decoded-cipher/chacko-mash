@@ -18,7 +18,13 @@ module.exports = {
         var assignRole = new Discord.MessageEmbed()
             .setColor('#ff702c')
             .setTitle(':crown:   Assign Server Roles')
-            .setDescription('**$role | <@role_id> | <@user_01> <@user_02> **\n\nTo assign a role to any no: of users at the same time by **InoBot**.  This command will notify the role assignment in <#883465290556530748> channel & DM respective users about their new role.')
+            .setDescription('**$role | <@role_id> | <@user_01> <@user_02>**\n\nTo assign a role to any no: of users at the same time by **InoBot**.  This command will notify the role assignment in <#883465290556530748> channel & DM respective users about their new role.')
         message.channel.send(assignRole)
+
+        var dmServerMember = new Discord.MessageEmbed()
+            .setColor('#2cd5ff')
+            .setTitle(':envelope_with_arrow:   DM Server Role(s) or User(s)')
+            .setDescription('**$dm | <@role_id> <@user_01> | <Enter the message>\n\n**To send a **Direct Message** to any role(s) or any no: of users at the same time by **InoBot**.  This command will also notify the message delivery in the <#883465290556530748> channel.')
+        message.channel.send(dmServerMember)
     }
 } 
