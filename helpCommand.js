@@ -24,7 +24,7 @@ module.exports = {
         var dmServerMember = new Discord.MessageEmbed()
             .setColor('#2cd5ff')
             .setTitle(':envelope_with_arrow:   DM Server Role(s) or User(s)')
-            .setDescription('**$dm | <@role_id> <@user_01> | <Enter the message>\n\n**To send a **Direct Message** to any role(s) or any no: of users at the same time by **InoBot**.  This command will also notify the message delivery in the <#883465290556530748> channel.')
+            .setDescription('**$dm | <@user_id> <@role_id> | <Enter the message>\n\n**To send a **Direct Message** to any role(s) or any no: of users at the same time by **InoBot**.  This command will also notify the message delivery in the <#883465290556530748> channel.')
         message.channel.send(dmServerMember)
     }
 } 
