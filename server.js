@@ -1,4 +1,6 @@
 require('dotenv').config()
+var moment = require('moment')
+moment().format()
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -19,6 +21,7 @@ admin.initializeApp({
 
 var database = admin.database()
 var memberData = database.ref(process.env.FIREBASE_DATABASE_PATH)
+var birthdayData = database.ref(process.env.FIREBASE_BDAY_PATH)
 // ----- Firebase Config End -----
 
 
@@ -31,6 +34,9 @@ client.commands.set(helpCommand.name, helpCommand)
 var birthday = require("./birthday")
 client.commands.set(birthday.name, birthday)
 
+var bdayNotify = require("./bdayNotify")
+client.commands.set(bdayNotify.name, bdayNotify)
+
 var roles = require("./roles")
 client.commands.set(roles.name, roles)
 
@@ -41,8 +47,10 @@ var dmUser = require("./dmUser")
 client.commands.set(dmUser.name, dmUser)
 
 
-client.on('ready', () => {
+
+client.on('ready', async () => {
     client.commands.get('/onReady').execute(client)
+    client.commands.get('/bdayNotify').execute(client, birthdayData, memberData, moment, Discord)
 });
 
 client.on('guildMemberAdd', guildMember => {
