@@ -1,6 +1,7 @@
 require('dotenv').config()
-var moment = require('moment')
-moment().format()
+
+var moment = require('moment-timezone');
+moment().tz("Asia/Colombo").format();
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -49,8 +50,8 @@ client.commands.set(dmUser.name, dmUser)
 
 
 client.on('ready', async () => {
-    client.commands.get('/onReady').execute(client)
-    client.commands.get('/bdayNotify').execute(client, birthdayData, memberData, moment, Discord)
+    await client.commands.get('/onReady').execute(client)
+    await client.commands.get('/bdayNotify').execute(client, birthdayData, memberData, moment, Discord)
 });
 
 client.on('guildMemberAdd', guildMember => {

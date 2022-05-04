@@ -3,9 +3,13 @@ module.exports = {
     // description : "",
     execute(client, birthdayData, memberData, moment, Discord) {
         var utc = new Date();
-        console.log(utc);
-        var nowMonth = moment(utc).utcOffset("+05:30").format("M");
-        var nowDay = moment(utc).utcOffset("+05:30").format("D");
+        console.log(utc.toString());
+
+        var ISTDate = moment.utc(utc).tz("Asia/Colombo");
+        console.log(ISTDate.toString());
+
+        var nowMonth = moment(ISTDate).format("M");
+        var nowDay = moment(ISTDate).format("D");
 
         console.log(nowMonth, nowDay);
 
