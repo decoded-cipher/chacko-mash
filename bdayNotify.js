@@ -7,7 +7,7 @@ module.exports = {
         var nowMonth = moment(utc).utcOffset("+05:30").format("M");
         var nowDay = moment(utc).utcOffset("+05:30").format("D");
 
-        // console.log(nowMonth, nowDay);
+        console.log(nowMonth, nowDay);
 
         birthdayData.once('value', async (snapshot) => {
             var bDayData = await snapshot.val();
