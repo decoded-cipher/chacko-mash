@@ -1,15 +1,19 @@
 module.exports = {
     name: "/bdayNotify",
     // description : "",
-    async execute(client, birthdayData, memberData, moment, Discord) {
+    execute(client, birthdayData, memberData, moment, Discord) {
         var utc = new Date();
-        console.log(utc);
-        var nowMonth = moment(utc).utcOffset("+05:30").format("M");
-        var nowDay = moment(utc).utcOffset("+05:30").format("D");
+        console.log(utc.toString());
+
+        var ISTDate = moment.utc(utc).tz("Asia/Colombo");
+        console.log(ISTDate.toString());
+
+        var nowMonth = moment(ISTDate).format("M");
+        var nowDay = moment(ISTDate).format("D");
 
         // console.log(nowMonth, nowDay);
 
-        await birthdayData.once('value', async (snapshot) => {
+        birthdayData.once('value', async (snapshot) => {
             var bDayData = await snapshot.val();
             // console.log(bDayData);
             for (var key in bDayData) {
@@ -19,7 +23,7 @@ module.exports = {
                     // console.log(bDayData[key]);
                     // console.log(key);
 
-                    memberData.orderByChild("Discord User ID").equalTo(key).on('value', async snapshot => {
+                    await memberData.orderByChild("Discord User ID").equalTo(key).on('value', async snapshot => {
                         var memberData = await snapshot.val();
                         // console.log(memberData);
 
@@ -41,7 +45,7 @@ module.exports = {
                                     .setTitle(':ribbon:   Birthday Notification   :ribbon:')
                                     .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${name}** - <@${id}>\n> $bday | #general | ${id}\n.`)
                                     .setFooter('Copy & Paste the command to generate Birthday Day Wish')
-                                client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
+                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
 
                             } else {
                                 // console.log(nameInput);
@@ -55,7 +59,7 @@ module.exports = {
                                         value: `.\nInform <@${id}> to update profile pic, so that he/she can have a **Birthday Wish Card**, the next year!`,
                                     })
                                     .setFooter('Unfortunately, Birthday Wish Card can\'t be generated!')
-                                client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
+                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
                             }
                         }
 
