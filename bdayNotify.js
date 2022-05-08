@@ -33,17 +33,18 @@ module.exports = {
 
                             var DiscordUserData = await client.users.fetch(key);
                             if (DiscordUserData.avatarURL() != null) {
-                                // console.log(nameInput);
+                                console.log("Success Post Generated!");
                                 
                                 var successPost = new Discord.MessageEmbed()
                                     .setColor('#28a745')
                                     .setTitle(':ribbon:   Birthday Notification   :ribbon:')
                                     .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${name}** - <@${id}>\n> $bday | #general | ${id}\n.`)
                                     .setFooter('Copy & Paste the command to generate Birthday Day Wish')
-                                client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
+                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
+                                console.log("Success Post Sent to " + process.env.TARGET_CHANNEL);
 
                             } else {
-                                // console.log(nameInput);
+                                console.log("Error Post Generated!");
 
                                 var errorPost = new Discord.MessageEmbed()
                                     .setColor('#c25827')
@@ -54,7 +55,8 @@ module.exports = {
                                         value: `.\nInform <@${id}> to update profile pic, so that he/she can have a **Birthday Wish Card**, the next year!`,
                                     })
                                     .setFooter('Unfortunately, Birthday Wish Card can\'t be generated!')
-                                client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
+                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
+                                console.log("Error Post Sent to " + process.env.TARGET_CHANNEL);
                             }
                         }
 
