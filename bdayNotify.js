@@ -6,7 +6,7 @@ module.exports = {
         var nowMonth = moment(IST).format("M");
         var nowDay = moment(IST).format("D");
 
-        console.log(nowMonth, nowDay);
+        // console.log(nowMonth, nowDay);
 
         birthdayData.once('value', async (snapshot) => {
             var bDayData = await snapshot.val();
