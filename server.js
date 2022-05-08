@@ -3,6 +3,9 @@ require('dotenv').config()
 var moment = require('moment-timezone');
 moment().tz("Asia/Colombo").format();
 
+var utc = new Date();
+var IST = moment.utc(utc).tz("Asia/Colombo");
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
 var PREFIX = "$"
@@ -51,7 +54,7 @@ client.commands.set(dmUser.name, dmUser)
 
 client.on('ready', async () => {
     await client.commands.get('/onReady').execute(client)
-    await client.commands.get('/bdayNotify').execute(client, birthdayData, memberData, moment, Discord)
+    await client.commands.get('/bdayNotify').execute(client, birthdayData, memberData, moment, Discord, IST)
 });
 
 client.on('guildMemberAdd', guildMember => {
@@ -118,7 +121,7 @@ client.on('message', (message) => {
             // .setAuthor(message.author.username)
             .setAuthor(message.author.username, `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`)
             .setDescription(message.content)
-            .setFooter(Date())
+            .setFooter(IST.toString())
         client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
     }
 })
