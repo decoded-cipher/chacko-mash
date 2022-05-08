@@ -40,7 +40,7 @@ module.exports = {
                                     .setTitle(':ribbon:   Birthday Notification   :ribbon:')
                                     .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${name}** - <@${id}>\n> $bday | #general | ${id}\n.`)
                                     .setFooter('Copy & Paste the command to generate Birthday Day Wish')
-                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
+                                client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
 
                             } else {
                                 // console.log(nameInput);
@@ -54,7 +54,7 @@ module.exports = {
                                         value: `.\nInform <@${id}> to update profile pic, so that he/she can have a **Birthday Wish Card**, the next year!`,
                                     })
                                     .setFooter('Unfortunately, Birthday Wish Card can\'t be generated!')
-                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
+                                client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
                             }
                         }
 
