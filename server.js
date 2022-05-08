@@ -52,7 +52,7 @@ client.commands.set(dmUser.name, dmUser)
 
 
 
-client.on('ready', async () => {
+client.once('ready', async () => {
     await client.commands.get('/onReady').execute(client)
     await client.commands.get('/bdayNotify').execute(client, birthdayData, memberData, moment, Discord, IST)
 });
