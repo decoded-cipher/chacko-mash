@@ -1,15 +1,10 @@
 module.exports = {
     name: "/bdayNotify",
     // description : "",
-    execute(client, birthdayData, memberData, moment, Discord) {
-        var utc = new Date();
-        console.log(utc.toString());
+    execute(client, birthdayData, memberData, moment, Discord, IST) {
 
-        var ISTDate = moment.utc(utc).tz("Asia/Colombo");
-        console.log(ISTDate.toString());
-
-        var nowMonth = moment(ISTDate).format("M");
-        var nowDay = moment(ISTDate).format("D");
+        var nowMonth = moment(IST).format("M");
+        var nowDay = moment(IST).format("D");
 
         // console.log(nowMonth, nowDay);
 
