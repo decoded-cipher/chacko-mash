@@ -54,7 +54,18 @@ client.commands.set(dmUser.name, dmUser)
 
 client.once('ready', async () => {
     await client.commands.get('/onReady').execute(client)
-    await client.commands.get('/bdayNotify').execute(client, birthdayData, memberData, moment, Discord, IST)
+
+    var mm = moment(IST).format("M");
+    var dd = moment(IST).format("D");
+
+    api.getBdayUser(dd, mm).then((users) => {
+        if (users != 'No data found') {
+            client.commands.get('/bdayNotify').execute(client, users, Discord)
+        }
+    }).catch((error) => {
+        console.log(error);
+    })
+
 });
 
 client.on('guildMemberAdd', guildMember => {

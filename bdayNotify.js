@@ -1,67 +1,40 @@
+var api = require('./apiClient.js')
+
 module.exports = {
     name: "/bdayNotify",
     // description : "",
-    execute(client, birthdayData, memberData, moment, Discord, IST) {
+    async execute(client, users, Discord) {
 
-        var nowMonth = moment(IST).format("M");
-        var nowDay = moment(IST).format("D");
+        for (let user in users) {
+            await api.getExtUserData(users[user]).then(async (extUser) => {
 
-        // console.log(nowMonth, nowDay);
+                var successPost = new Discord.MessageEmbed()
+                    .setColor('#28a745')
+                    .setTitle(':ribbon:   Birthday Notification   :ribbon:')
+                    .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${extUser.name}** - <@${extUser._id}>\n> $bday | #general | ${extUser._id}\n.`)
+                    .setFooter('Copy & Paste the command to generate Birthday Day Wish')
 
-        birthdayData.once('value', async (snapshot) => {
-            
-            var bDayData = await snapshot.val();
-            // console.log(bDayData);
-            for (var key in bDayData) {
-                var bDayMonth = bDayData[key].Month;
-                var bDayDay = bDayData[key].Day;
+                var errorPost = new Discord.MessageEmbed()
+                    .setColor('#c25827')
+                    .setTitle(':ribbon:   Birthday Notification   :ribbon:')
+                    .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${extUser.name}** - <@${extUser._id}>\n> ${extUser.department}\n.`)
+                    .addFields({
+                        name: ':warning:   Urgent Notification   :warning:',
+                        value: `.\nInform <@${extUser._id}> to update profile pic, so that he/she can have a **Birthday Wish Card**, the next year!`,
+                    })
+                    .setFooter('Unfortunately, Birthday Wish Card can\'t be generated!')
 
-                if (bDayMonth == nowMonth && bDayDay == nowDay) {
-                    // console.log(bDayData[key]);
-                    // console.log(key);
 
-                    await memberData.orderByChild("Discord User ID").equalTo(key).on('value', async snapshot => {
-                        var memberData = await snapshot.val();
-                        // console.log(memberData);
-
-                        for (let key in memberData) {
-                            // console.log(key);
-
-                            for (let property in memberData[key]) {
-                                var name = memberData[key]['Full Name']
-                                var id = memberData[key]['Discord User ID']
-                                var dept = memberData[key]['Department']
-                            }
-
-                            var DiscordUserData = await client.users.fetch(key);
-                            if (DiscordUserData.avatarURL() != null) {
-                                
-                                var successPost = new Discord.MessageEmbed()
-                                    .setColor('#28a745')
-                                    .setTitle(':ribbon:   Birthday Notification   :ribbon:')
-                                    .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${name}** - <@${id}>\n> $bday | #general | ${id}\n.`)
-                                    .setFooter('Copy & Paste the command to generate Birthday Day Wish')
-                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
-
-                            } else {
-                                var errorPost = new Discord.MessageEmbed()
-                                    .setColor('#c25827')
-                                    .setTitle(':ribbon:   Birthday Notification   :ribbon:')
-                                    .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${name}** - <@${id}>\n> ${dept}\n.`)
-                                    .addFields({
-                                        name: ':warning:   Urgent Notification   :warning:',
-                                        value: `.\nInform <@${id}> to update profile pic, so that he/she can have a **Birthday Wish Card**, the next year!`,
-                                    })
-                                    .setFooter('Unfortunately, Birthday Wish Card can\'t be generated!')
-                                await client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
-                                
-                            }
-                        }
-
-                    });
+                if (extUser.discord.avatar.split('/').pop() != 'null.png') {
+                    await client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
+                } else {
+                    await client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
                 }
-            }
-        })
 
+            }).catch((error) => {
+                console.log(error);
+            })
+
+        }
     }
 }

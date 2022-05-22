@@ -4,9 +4,9 @@ axios.defaults.headers.common['Authorization'] = 'Bearer ' + process.env.INOVUS_
 
 module.exports = {
 
-    getUserData: (id) => {
+    getExtUserData: (id) => {
         return new Promise(async (resolve, reject) => {
-            await axios.get('/user', {
+            await axios.get('/user/ext', {
                     params: {
                         id: id
                     }
@@ -20,11 +20,12 @@ module.exports = {
         });
     },
 
-    getExtUserData: (id) => {
+    getBdayUser: (day, month) => {
         return new Promise(async (resolve, reject) => {
-            await axios.get('/user/ext', {
+            await axios.get('/bday', {
                     params: {
-                        id: id
+                        dd: day,
+                        mm: month
                     }
                 })
                 .then((response) => {
