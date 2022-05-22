@@ -13,7 +13,6 @@ var PREFIX = "$"
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 client.commands = new Discord.Collection()
 
-
 // ----- Firebase Config Start -----
 var admin = require("firebase-admin");
 var serviceAccount = require("./firebase-admin.json");
@@ -28,6 +27,7 @@ var memberData = database.ref(process.env.FIREBASE_DATABASE_PATH)
 var birthdayData = database.ref(process.env.FIREBASE_BDAY_PATH)
 // ----- Firebase Config End -----
 
+var api = require('./apiClient.js')
 
 var onReady = require("./onReady")
 client.commands.set(onReady.name, onReady)
@@ -69,7 +69,7 @@ client.on('message', (message) => {
 
 
 
-client.on('message', (message) => {
+client.on('message', async (message) => {
     if (message.content.startsWith(PREFIX)) {
 
         if (message.member.roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
@@ -78,27 +78,23 @@ client.on('message', (message) => {
             TARGET_CHANNEL = TARGET_CHANNEL.replace(/[^0-9\s]/g, '')
 
             if (CMD_NAME === 'bot') {
-                // console.log((typeof(args)));
+
                 client.channels.cache.get(TARGET_CHANNEL).send(args);
 
             } else if (CMD_NAME === 'bday') {
-                // console.log(args);
-                memberData.orderByChild("Discord User ID").equalTo(args).on('value', async snapshot => {
-                    var bDayData = await snapshot.val();
-                    var DiscordUserData = await client.users.fetch(args);
-                    // console.log(bDayData);
-                    // console.log(DiscordUserData);
-                    client.commands.get('/birthday').execute(client, TARGET_CHANNEL, bDayData, DiscordUserData)
-                });
+                
+                api.getExtUserData(args).then((userData) => {
+                    client.commands.get('/birthday').execute(client, TARGET_CHANNEL, userData, IST)
+                }).catch((error) => {
+                    console.log(error);
+                })
 
             } else if (CMD_NAME === 'role') {
-                // console.log(TARGET_CHANNEL);
-                // console.log(args);
+
                 client.commands.get('/roles').execute(client, message, TARGET_CHANNEL, args)
                 
             } else if (CMD_NAME === 'dm') {
-                // console.log(TARGET_CHANNEL);
-                // console.log(args);
+
                 client.commands.get('/dmUser').execute(client, message, TARGET_CHANNEL, args)
                 
             } else {

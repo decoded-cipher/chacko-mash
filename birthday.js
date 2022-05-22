@@ -1,29 +1,11 @@
 module.exports = {
     name: "/birthday",
     // description : "",
-    async execute(client, TARGET_CHANNEL, bDayData, DiscordUserData) {
+    async execute(client, TARGET_CHANNEL, userData, IST) {
 
-        for (let key in bDayData) {
-            // console.log(key);
-
-            for (let property in bDayData[key]) {
-                // console.log(bDayData[key][property]);
-
-                var nameInput = bDayData[key]['Full Name']
-                var discordIdInput = DiscordUserData.username + '#' + DiscordUserData.discriminator
-
-                var birthYear = new Date(bDayData[key]['Date of Birth']).getFullYear();
-
-                var avatarImage = `https://cdn.discordapp.com/avatars/${DiscordUserData.id}/${DiscordUserData.avatar}.png`
-                var gender = bDayData[key]['Gender']
-                // var discordAvatar = DiscordUserData.username
-            }
-        }
-
-        var presentYear = new Date().getFullYear();
-        var age = presentYear - birthYear
-        console.log(age);
-
+        var presentYear = new Date(IST.toString()).getFullYear();
+        var age = presentYear - userData.dob.year
+        
         switch (age % 10) {
             case 1:
                 AgeWish = age + "st Birthday";
@@ -38,11 +20,6 @@ module.exports = {
                 AgeWish = age + "th Birthday";
         }
 
-        // console.log(nameInput);
-        // console.log(discordIdInput);
-        // console.log(AgeWish);
-        // console.log(avatarImage);
-
         const fs = require('fs')
         const { registerFont, createCanvas, loadImage } = require('canvas')
 
@@ -56,9 +33,9 @@ module.exports = {
         const ctx = canvas.getContext('2d')
 
         var designTemplate = ''
-        gender == 'Male' ? designTemplate = 'template_3.jpg' : designTemplate = 'template_2.jpg';
+        userData.gender == 'Male' ? designTemplate = 'template_3.jpg' : designTemplate = 'template_2.jpg';
 
-        await loadImage(avatarImage).then(async(avatar) => {
+        await loadImage(userData.discord.avatar).then(async(avatar) => {
 
             await loadImage(`assets/birthday/templates/${designTemplate}`).then(async (image) => {
 
@@ -80,10 +57,10 @@ module.exports = {
                 ctx.textAlign = "center";
 
                 ctx.font = '48px Lithos Pro Regular, sans-serif'
-                ctx.fillText(nameInput, 425, 870)
+                ctx.fillText(userData.name, 425, 870)
 
                 ctx.font = '25px Lithos Pro Regular, sans-serif'
-                ctx.fillText(discordIdInput, 425, 910)
+                ctx.fillText(userData.discord.tag, 425, 910)
 
                 ctx.font = '96px Alex Brush, cursive'
                 ctx.fillText(AgeWish, 420, 1190)
@@ -94,15 +71,12 @@ module.exports = {
 
         })
 
-        await client.channels.cache.get(TARGET_CHANNEL).send(`“This birthday, I wish you abundant happiness and love. May all your dreams turn into reality and may lady luck visit your home today. Happy birthday <@${DiscordUserData.id}>.”`)
+        await client.channels.cache.get(TARGET_CHANNEL).send(`“This birthday, I wish you abundant happiness and love. May all your dreams turn into reality and may lady luck visit your home today. Happy birthday <@${userData._id}>.”`)
 
         await client.channels.cache.get(TARGET_CHANNEL).send(`https://tenor.com/view/simhavalan-menon-jagathy-malayalam-happy-birthday-santhosha-janmadinam-kuttikku-gif-17580455`)
 
         await client.channels.cache.get(TARGET_CHANNEL).send({
             files: [`assets/birthday/output.png`]
         })
-
-        // console.log(DiscordUserData);
-        // console.log(bDayData);
     }
 }
