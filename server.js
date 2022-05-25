@@ -38,6 +38,9 @@ client.commands.set(welcome.name, welcome)
 var dmUser = require("./dmUser")
 client.commands.set(dmUser.name, dmUser)
 
+var profile = require("./profile")
+client.commands.set(profile.name, profile)
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 client.once('ready', async () => {
@@ -67,13 +70,17 @@ client.on('message', (message) => {
 
     } else if (message.guild === null && !message.author.bot) {
 
-        var newEmbed = new Discord.MessageEmbed()
-            .setColor('#4b9fc3')
-            .setAuthor(message.author.username, `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`)
-            .setDescription(message.content)
-            .setFooter(IST.toString())
-        client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
+        if (message.content.startsWith('/edit-profile')) {
+            client.commands.get('/profile').execute(message)
 
+        } else {
+            var newEmbed = new Discord.MessageEmbed()
+                .setColor('#4b9fc3')
+                .setAuthor(message.author.username, `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`)
+                .setDescription(message.content)
+                .setFooter(IST.toString())
+            client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
+        }
     }
 
 });
