@@ -1,5 +1,5 @@
 module.exports = {
-    name : "/helpCommand",
+    name: "/helpCommand",
     // description : "",
     execute(message, Discord) {
 
@@ -26,5 +26,11 @@ module.exports = {
             .setTitle(':envelope_with_arrow:   DM Server Role(s) or User(s)')
             .setDescription('**$dm | <@user_id> <@role_id> | <Enter the message>\n\n**To send a **Direct Message** to any role(s) or any no: of users at the same time by **InoBot**.  This command will also notify the message delivery in the <#883465290556530748> channel.')
         message.channel.send(dmServerMember)
+
+        var editProfile = new Discord.MessageEmbed()
+            .setColor('#2c2cff')
+            .setTitle(':page_facing_up:   Update Inovus Profiles')
+            .setDescription('Type **/edit-profile**\n\nSend the message to <@842062518675439617> via DM. This command will update your **Inovus Profiles** or generates the profile if it doesn\'t exist.')
+        message.channel.send(editProfile)
     }
-} 
+}
