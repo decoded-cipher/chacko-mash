@@ -30,7 +30,7 @@ module.exports = {
         var editProfile = new Discord.MessageEmbed()
             .setColor('#2c2cff')
             .setTitle(':page_facing_up:   Update Inovus Profiles')
-            .setDescription('Type **/edit-profile**\n\nSend the message to <@842062518675439617> via DM. This command will update your **Inovus Profiles** or generates the profile if it doesn\'t exist.')
+            .setDescription('Type **/edit-profile**\n\nSend the message to <@842062518675439617> via DM. This command will update your **Inovus Profiles** or generates the profile if it doesn\'t exists.\n\n> Note :\n> You\'ll have to switch to the same **Google Account** that you have used to submit the **Google Form** initially, every time to **Edit the Response**.')
         message.channel.send(editProfile)
     }
 }
