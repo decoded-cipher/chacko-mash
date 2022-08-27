@@ -24,8 +24,9 @@ module.exports = {
                     })
                     .setFooter('Unfortunately, Birthday Wish Card can\'t be generated!')
 
+                var avatar = await extUser.discord.avatar.split('/').pop()
 
-                if (extUser.discord.avatar.split('/').pop() != 'null.png') {
+                if (avatar != 'null.png') {
                     await client.channels.cache.get(process.env.TARGET_CHANNEL).send(successPost);
                 } else {
                     await client.channels.cache.get(process.env.TARGET_CHANNEL).send(errorPost);
