@@ -6,7 +6,7 @@ module.exports = {
     // description : "",
     async execute(client, users, Discord) {
 
-        var job = new CronJob('0 0 * * *', async() => {
+        var job = new CronJob('30 0 * * *', async() => {
 
             for (let user in users) {
                 await api.getExtUserData(users[user]).then(async (extUser) => {
