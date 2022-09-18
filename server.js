@@ -1,10 +1,6 @@
 require('dotenv').config()
 
-var moment = require('moment-timezone');
-moment().tz("Asia/Colombo").format();
-
-var utc = new Date();
-var IST = moment.utc(utc).tz("Asia/Colombo");
+var IST = new Date();
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -40,8 +36,8 @@ client.commands.set(profile.name, profile)
 client.once('ready', async () => {
     await client.commands.get('/onReady').execute(client)
 
-    var mm = moment(IST).format("M");
-    var dd = moment(IST).format("D");
+    var mm = IST.getMonth() + 1;
+    var dd = IST.getDate();
 
     api.getBdayUser(dd, mm).then((users) => {
         if (users != 'No data found') {

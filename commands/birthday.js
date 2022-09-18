@@ -3,7 +3,7 @@ module.exports = {
     // description : "",
     async execute(client, TARGET_CHANNEL, userData, IST) {
 
-        var presentYear = new Date(IST.toString()).getFullYear();
+        var presentYear = IST.getFullYear()
         var age = presentYear - userData.dob.year
         
         switch (age % 10) {
