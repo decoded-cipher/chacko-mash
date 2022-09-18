@@ -17,28 +17,22 @@ client.commands = new Discord.Collection()
 
 var api = require('./apiClient.js')
 
-var onReady = require("./onReady")
+var onReady = require("./commands/onReady.js");
+var helpCommand = require("./commands/helpCommand")
+var birthday = require("./commands/birthday")
+var bdayNotify = require("./commands/bdayNotify")
+var roles = require("./commands/roles")
+var welcome = require("./commands/welcome")
+var dmUser = require("./commands/dmUser")
+var profile = require("./commands/profile")
+
 client.commands.set(onReady.name, onReady)
-
-var helpCommand = require("./helpCommand")
 client.commands.set(helpCommand.name, helpCommand)
-
-var birthday = require("./birthday")
 client.commands.set(birthday.name, birthday)
-
-var bdayNotify = require("./bdayNotify")
 client.commands.set(bdayNotify.name, bdayNotify)
-
-var roles = require("./roles")
 client.commands.set(roles.name, roles)
-
-var welcome = require("./welcome")
 client.commands.set(welcome.name, welcome)
-
-var dmUser = require("./dmUser")
 client.commands.set(dmUser.name, dmUser)
-
-var profile = require("./profile")
 client.commands.set(profile.name, profile)
 
 // ---------------------------------------------------------------------------------------------------------------------

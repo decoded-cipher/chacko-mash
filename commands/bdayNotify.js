@@ -1,4 +1,4 @@
-var api = require('./apiClient.js')
+var api = require('../apiClient.js')
 var CronJob = require('cron').CronJob;
 
 module.exports = {
