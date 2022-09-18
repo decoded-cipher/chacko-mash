@@ -17,6 +17,6 @@ module.exports = {
             files: ['https://user-images.githubusercontent.com/44474792/126882345-a229f1c8-0ad6-455e-b2e4-eba1b580cb2e.jpg']
         })
 
-        client.channels.cache.get(process.env.TARGET_CHANNEL).send("> Heroku Server Time :\n> **" + Date() + "**");
+        client.channels.cache.get(process.env.TARGET_CHANNEL).send("Heroku Server Time : " + Date());
     }
 }
