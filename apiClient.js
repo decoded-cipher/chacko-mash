@@ -35,5 +35,19 @@ module.exports = {
                     reject(error);
                 });
         });
+    },
+
+    postHacktoberfestData: (data) => {
+        return new Promise(async (resolve, reject) => {
+
+            await axios.post('/hacktoberfest', data)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+            
+        });
     }
 }
