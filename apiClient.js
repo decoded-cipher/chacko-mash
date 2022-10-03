@@ -49,5 +49,19 @@ module.exports = {
             });
             
         });
+    },
+
+    getHacktoberfestData: () => {
+        return new Promise(async (resolve, reject) => {
+
+            await axios.get('/hacktoberfest')
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+            
+        });
     }
 }

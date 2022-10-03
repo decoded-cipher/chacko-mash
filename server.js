@@ -23,6 +23,9 @@ var dmUser = require("./commands/dmUser")
 var profile = require("./commands/profile")
 var hacktoberfest = require("./commands/hacktoberfest")
 
+var imageGenerator = require("./utilities/imageGenerator")
+client.commands.set(imageGenerator.name, imageGenerator)
+
 client.commands.set(onReady.name, onReady)
 client.commands.set(helpCommand.name, helpCommand)
 client.commands.set(birthday.name, birthday)
@@ -37,6 +40,8 @@ client.commands.set(hacktoberfest.name, hacktoberfest)
 
 client.once('ready', async () => {
     await client.commands.get('/onReady').execute(client)
+
+    await client.commands.get('/imageGenerator').execute()
 
     var mm = IST.getMonth() + 1;
     var dd = IST.getDate();
