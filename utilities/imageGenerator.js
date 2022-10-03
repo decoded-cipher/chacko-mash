@@ -1,6 +1,6 @@
 module.exports = {
     name : "/imageGenerator",
-    execute() {
+    execute(data) {
 
         const fs = require('fs')
         const { registerFont, createCanvas, loadImage } = require('canvas')
@@ -12,11 +12,6 @@ module.exports = {
 
         const canvas = createCanvas(width, height)
         const ctx = canvas.getContext('2d')
-
-        var data = {
-            name : 'Sreelakshmi Anilkumar',
-            id : 'INO2022HBF001',
-        }
 
         loadImage('assets/hacktoberfest/templates/template_1.png').then((image) => {
 
@@ -38,10 +33,10 @@ module.exports = {
 
             ctx.font = '75px Gilroy SemiBold, sans-serif'
             ctx.fillStyle = '#E5E1E626'
-            ctx.fillText(data.id, 1190, 17)
+            ctx.fillText(data.certificateId, 1190, 17)
 
             var buffer = canvas.toBuffer('image/png')
-            fs.writeFileSync('assets/hacktoberfest/output.png', buffer)
+            fs.writeFileSync(`assets/hacktoberfest/${data.name}.png`, buffer)
         })
     }
 }

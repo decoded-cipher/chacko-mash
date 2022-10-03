@@ -3,7 +3,7 @@ axios.defaults.baseURL = process.env.API_BASE_URL;
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + process.env.INOVUS_AUTH_TOKEN;
 
 module.exports = {
-
+    
     getExtUserData: (id) => {
         return new Promise(async (resolve, reject) => {
             await axios.get('/user/ext', {
