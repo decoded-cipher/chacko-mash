@@ -114,12 +114,14 @@ client.on('message', async (message) => {
 
 client.on('messageReactionAdd', async (reaction, user) => {
     
-    var message = !reaction.message.author ? await reaction.message.fetch() : reaction.message;
+    await reaction.fetch();
+    var { message } = reaction;
+    await message.fetch();
     
     if (message.channel.id === process.env.HF_CHANNEL && reaction.emoji.name === 'hacktoberfest') {
-        if (message.member.roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
+        if (message.guild.member(user).roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
         
-            client.commands.get('/hacktoberfest').execute(client, message, user);
+            client.commands.get('/hacktoberfest').execute(client, message, reaction, user, Discord);
             
         } else {
             reaction.users.remove(user.id);
