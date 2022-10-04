@@ -36,7 +36,7 @@ module.exports = {
             ctx.fillText(data.certificateId, 1190, 17)
 
             var buffer = canvas.toBuffer('image/png')
-            fs.writeFileSync(`assets/hacktoberfest/${data.name}.png`, buffer)
+            fs.writeFileSync('assets/hacktoberfest/certificate.png', buffer)
         })
     }
 }
