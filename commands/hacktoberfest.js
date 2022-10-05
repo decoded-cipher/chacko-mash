@@ -40,12 +40,13 @@ module.exports = {
             })
 
             // Send Email
-            sendEmail.execute(data, Discord, client);
+            sendEmail.execute(data, Discord, client, user);
 
             var ServerPost = new Discord.MessageEmbed()
                 .setColor('#9092ff')
-                .setTitle(':cloud_lightning:   Hacktoberfest Certificate Generated   :cloud_lightning:')
-                .setDescription(`> **${data.name}**\n> ${data.email}\n> ${data.id}\n\n**Certificate ID :** ${data.certificateId}\n**Approver :** ${user}`)
+                .setTitle(':cloud_lightning:   Hacktoberfest Certificate Initiated   :cloud_lightning:')
+                .setDescription(`Dear **${data.name}**,\nThanks for your open-source contribution to one of our repositories during this **Hacktoberfest Season**. :sparkles:\n\n> Your **Certificate of Contribution** has been emailed. For more details, check the DM with me.`)
+                .setFooter('Happy Hacktober Kiddos!')
 
             var UserPost = new Discord.MessageEmbed()
                 .setColor('#9092ff')
@@ -53,8 +54,8 @@ module.exports = {
                 .setDescription(`** **\nHurray!\nYou have successfully contributed to an Open-source Repository maintained by **Inovus Labs** during this **Hacktoberfest** Season.  :sparkles:\n\nA small token of appreciation in the format of a **Certificate of Contribution** has been sent to the below-mentioned Email Address.  :sparkles:\n\n> Name : **${data.name}**\n> Email : **${data.email}**\n\n> Certificate ID : **${data.certificateId}**\n\nIf the certificate is not received in 15 minutes, contact the **Server Moderator** or **X-Men**.\n\n\n** **`)
                 .setFooter('I\'m a bot, don\'t reply to me.')
 
+            await client.channels.cache.get(process.env.HF_CHANNEL).send(ServerPost);
             await client.users.cache.get(data.id).send(UserPost);
-            await client.channels.cache.get(process.env.TARGET_CHANNEL).send(ServerPost);
 
         }).catch((error) => {
             console.log(error);

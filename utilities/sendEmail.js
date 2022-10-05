@@ -9,7 +9,7 @@ var emailTemplate = fs.readFileSync(hf_emailTemplate, 'utf-8').toString();
 
 module.exports = {
     name : "/sendEmail",
-    execute(data, Discord, client) {
+    execute(data, Discord, client, user) {
 
         var template = handlebars.compile(emailTemplate);
         var replacements = {
@@ -44,12 +44,12 @@ module.exports = {
         var successPost = new Discord.MessageEmbed()
             .setColor('#28a745')
             .setTitle(':cloud_lightning:   Certificate Delivery Notification   :cloud_lightning:')
-            .setDescription(`> **${data.name}**\n> ${data.email}\n\nStatus : **Certificate Delivered Successfully**`)
+            .setDescription(`> **${data.name}**\n> ${data.email}\n> ${data.id}\n\n**Certificate ID** : ${data.certificateId}\n**Approver :** ${user}\n\nStatus : **Certificate Delivered Successfully**`)
 
         var errorPost = new Discord.MessageEmbed()
             .setColor('#c25827')
             .setTitle(':cloud_lightning:   Certificate Delivery Notification   :cloud_lightning:')
-            .setDescription(`> **${data.name}**\n> ${data.email}\n\nStatus : **Error while sending Certificate**`)
+            .setDescription(`> **${data.name}**\n> ${data.email}\n> ${data.id}\n\n**Certificate ID** : ${data.certificateId}\n**Approver :** ${user}\n\nStatus : **Error while sending Certificate**`)
         
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
