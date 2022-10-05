@@ -10,7 +10,7 @@ module.exports = {
         const width = 1920
         const height = 1080
 
-        const canvas = createCanvas(width, height)
+        const canvas = createCanvas(width, height, 'pdf')
         const ctx = canvas.getContext('2d')
 
         loadImage('assets/hacktoberfest/templates/template_1.png').then((image) => {
@@ -35,8 +35,8 @@ module.exports = {
             ctx.fillStyle = '#E5E1E626'
             ctx.fillText(data.certificateId, 1190, 17)
 
-            var buffer = canvas.toBuffer('image/png')
-            fs.writeFileSync('assets/hacktoberfest/certificate.png', buffer)
+            var buffer = canvas.toBuffer('application/pdf')
+            fs.writeFileSync('assets/hacktoberfest/certificate.pdf', buffer)
         })
     }
 }

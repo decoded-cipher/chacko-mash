@@ -21,24 +21,26 @@ module.exports = {
                 data.name = userData.name;
                 data.email = userData.email;
                 
-                // imageGenerator.execute(data);
+                // Generate Certificate
+                imageGenerator.execute(data);
 
             }).catch((error) => {
                 console.log(error);
             })
 
-            // await api.postHacktoberfestData(
-            //     {
-            //         id: data.id,
-            //         certificateId: data.certificateId
-            //     }
-            // ).then((response) => {
-            //     console.log(response);
-            // }).catch((error) => {
-            //     console.log(error);
-            // })
+            await api.postHacktoberfestData(
+                {
+                    id: data.id,
+                    certificateId: data.certificateId
+                }
+            ).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            })
 
-            sendEmail.execute(data);
+            // Send Email
+            sendEmail.execute(data, Discord, client);
 
             var ServerPost = new Discord.MessageEmbed()
                 .setColor('#9092ff')
@@ -51,7 +53,7 @@ module.exports = {
                 .setDescription(`** **\nHurray!\nYou have successfully contributed to an Open-source Repository maintained by **Inovus Labs** during this **Hacktoberfest** Season.  :sparkles:\n\nA small token of appreciation in the format of a **Certificate of Contribution** has been sent to the below-mentioned Email Address.  :sparkles:\n\n> Name : **${data.name}**\n> Email : **${data.email}**\n\n> Certificate ID : **${data.certificateId}**\n\nIf the certificate is not received in 15 minutes, contact the **Server Moderator** or **X-Men**.\n\n\n** **`)
                 .setFooter('I\'m a bot, don\'t reply to me.')
 
-            // await client.users.cache.get(data.id).send(UserPost);
+            await client.users.cache.get(data.id).send(UserPost);
             await client.channels.cache.get(process.env.TARGET_CHANNEL).send(ServerPost);
 
         }).catch((error) => {
