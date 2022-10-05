@@ -21,6 +21,7 @@ var roles = require("./commands/roles")
 var welcome = require("./commands/welcome")
 var dmUser = require("./commands/dmUser")
 var profile = require("./commands/profile")
+var hacktoberfest = require("./commands/hacktoberfest")
 
 client.commands.set(onReady.name, onReady)
 client.commands.set(helpCommand.name, helpCommand)
@@ -30,6 +31,7 @@ client.commands.set(roles.name, roles)
 client.commands.set(welcome.name, welcome)
 client.commands.set(dmUser.name, dmUser)
 client.commands.set(profile.name, profile)
+client.commands.set(hacktoberfest.name, hacktoberfest)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -106,6 +108,24 @@ client.on('message', async (message) => {
 
         } else {
             message.reply(`\nYou are not allowed to use this command.\nPlease contact <@&${process.env.PRIORITY_ROLE_01}> for more details.`)
+        }
+    }
+})
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    
+    await reaction.fetch();
+    var { message } = reaction;
+    await message.fetch();
+    
+    if (message.channel.id === process.env.HF_CHANNEL && reaction.emoji.name === 'hacktoberfest') {
+        if (message.guild.member(user).roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
+        
+            client.commands.get('/hacktoberfest').execute(client, message, reaction, user, Discord);
+            
+        } else {
+            reaction.users.remove(user.id);
+            user.send(`\nYou are not allowed to use this reaction <#${process.env.HF_CHANNEL}> this channel.`);
         }
     }
 })
