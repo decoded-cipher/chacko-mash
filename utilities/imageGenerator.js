@@ -5,7 +5,7 @@ module.exports = {
         const fs = require('fs')
         const { registerFont, createCanvas, loadImage } = require('canvas')
 
-        // registerFont('./assets/fonts/Gilroy-SemiBold.ttf', { family: 'Gilroy SemiBold' })
+        registerFont('./assets/fonts/Gilroy-SemiBold.ttf', { family: 'Gilroy SemiBold' })
 
         const width = 1920
         const height = 1080
