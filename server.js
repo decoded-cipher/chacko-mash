@@ -120,8 +120,13 @@ client.on('messageReactionAdd', async (reaction, user) => {
     
     if (message.channel.id === process.env.HF_CHANNEL && reaction.emoji.name === 'hacktoberfest') {
         if (message.guild.member(user).roles.cache.find(role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02)) {
-        
-            client.commands.get('/hacktoberfest').execute(client, message, reaction, user, Discord);
+            
+            if (reaction.count === 1) {
+                client.commands.get('/hacktoberfest').execute(client, message, reaction, user, Discord);
+            } else {
+                reaction.users.remove(user.id);
+                user.send(`This message is already verified by an **X-Men** or the **Server Moderator**.`);
+            }
             
         } else {
             reaction.users.remove(user.id);
