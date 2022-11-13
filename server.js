@@ -1,7 +1,5 @@
 require('dotenv').config()
 
-var IST = new Date();
-
 const Discord = require('discord.js');
 const client = new Discord.Client();
 var PREFIX = "$"
@@ -59,7 +57,7 @@ client.on('message', (message) => {
                 .setColor('#4b9fc3')
                 .setAuthor(message.author.username, `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`)
                 .setDescription(message.content)
-                .setFooter(IST.toString())
+                .setFooter(new Date().toString())
             client.channels.cache.get(process.env.TARGET_CHANNEL).send(newEmbed);
         }
     }
@@ -79,8 +77,8 @@ client.on('message', async (message) => {
 
             } else if (CMD_NAME === 'bday') {
 
-                api.getExtUserData(args).then((userData) => {
-                    client.commands.get('/birthday').execute(client, TARGET_CHANNEL, userData, IST)
+                await api.getExtUserData(args).then((userData) => {
+                    client.commands.get('/birthday').execute(client, TARGET_CHANNEL, userData)
                 }).catch((error) => {
                     console.log(error);
                 })

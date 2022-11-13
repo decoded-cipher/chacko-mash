@@ -1,9 +1,9 @@
 module.exports = {
     name: "/birthday",
     // description : "",
-    async execute(client, TARGET_CHANNEL, userData, IST) {
+    async execute(client, TARGET_CHANNEL, userData) {
 
-        var presentYear = IST.getFullYear()
+        var presentYear = new Date().getFullYear()
         var age = presentYear - userData.dob.year
         
         switch (age % 10) {
