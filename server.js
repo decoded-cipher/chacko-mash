@@ -37,18 +37,7 @@ client.commands.set(hacktoberfest.name, hacktoberfest)
 
 client.once('ready', async () => {
     await client.commands.get('/onReady').execute(client)
-
-    var mm = IST.getMonth() + 1;
-    var dd = IST.getDate();
-
-    api.getBdayUser(dd, mm).then((users) => {
-        if (users != 'No data found') {
-            client.commands.get('/bdayNotify').execute(client, users, Discord)
-        }
-    }).catch((error) => {
-        console.log(error);
-    })
-
+    await client.commands.get('/bdayNotify').execute(client, Discord)
 });
 
 client.on('guildMemberAdd', guildMember => {
