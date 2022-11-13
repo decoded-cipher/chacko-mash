@@ -17,6 +17,7 @@ module.exports = {
             files: [`${welcomeImages[randomIndex]}`]
         });
         
+        guildMember.roles.add(process.env.WELCOME_ROLE);
         client.users.cache.get(guildMember.user.id).send(`:tada: Welcome to the **Inovus Labs** Student Community :tada:\n\nHey There,\nPlease make sure that you fill-up this form:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeXyH_5QqA8hYPems_uDvljsqjBadrSFuQ1NwdoubkOTV31WA/viewform?usp=pp_url&entry.1728088991=${guildMember.user.id} \n\nPlease don't forget to follow us on Social Medias.\n> Instagram : https://instagram.com/inovuslabs \n> Twitter : https://twitter.com/inovuslabs \n> LinkedIn : https://linkedin.com/company/inovuslabs \n** **`);
     }
 }
