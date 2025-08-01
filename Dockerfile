@@ -16,15 +16,35 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy package.json first and install
+# Copy package files
 COPY package*.json ./
-RUN npm install
+COPY tsconfig.json ./
+COPY jest.config.js ./
+COPY .eslintrc.js ./
+
+# Install dependencies
+RUN npm ci --only=production
 
 # Copy source files
-COPY . .
+COPY src/ ./src/
+COPY assets/ ./assets/
+COPY utilities/ ./utilities/
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Build TypeScript
+RUN npm run build
 
 # Set NODE_ENV
 ENV NODE_ENV production
 
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
 # Start the app
-CMD ["node", "server.js"]
+CMD ["node", "dist/server.js"]

@@ -1,0 +1,38 @@
+import { Client } from 'discord.js';
+
+export default {
+  name: '/onReady',
+  description: 'Bot ready event handler',
+  async execute(client: Client): Promise<void> {
+    try {
+      // Set bot presence
+      client.user?.setPresence({
+        status: 'online',
+        activities: [{
+          name: 'over Inovus Labs',
+          type: 3 // WATCHING
+        }]
+      });
+
+      console.log(`Logged in as ${client.user?.username}!`);
+
+      // Send startup messages
+      // const lobbyChannel = client.channels.cache.get(process.env.LOBBY_CHANNEL || '');
+      // if (lobbyChannel && 'send' in lobbyChannel) {
+      //   await lobbyChannel.send('👋');
+      //   await lobbyChannel.send(`Hey fellas, I'm back online.\nSorry for the little nap!\n😊`);
+      //   await lobbyChannel.send({ files: ['https://user-images.githubusercontent.com/44474792/126882345-a229f1c8-0ad6-455e-b2e4-eba1b580cb2e.jpg'] });
+      // }
+
+      // const targetChannel = client.channels.cache.get(process.env.TARGET_CHANNEL || '');
+      // if (targetChannel && 'send' in targetChannel) {
+      //   await targetChannel.send("Server Time : " + new Date().toString());
+      // }
+
+      console.log('Bot ready event executed successfully');
+
+    } catch (error) {
+      console.error('Failed to execute onReady command:', error);
+    }
+  },
+}; 
