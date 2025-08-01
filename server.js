@@ -1,8 +1,13 @@
 require('dotenv').config()
 
 const Discord = require('discord.js');
+const { startHealthServer } = require('./utilities/healthServer');
 const client = new Discord.Client();
 var PREFIX = "$"
+
+// Start health check server
+const PORT = process.env.PORT || 3000;
+startHealthServer(PORT);
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 client.commands = new Discord.Collection()
