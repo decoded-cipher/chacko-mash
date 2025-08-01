@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
   build-essential \
   python3 \
   pkg-config \
+  curl \
   && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -19,22 +20,22 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 COPY tsconfig.json ./
-COPY jest.config.js ./
-COPY .eslintrc.js ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci
 
 # Copy source files
 COPY src/ ./src/
 COPY assets/ ./assets/
-COPY utilities/ ./utilities/
 
 # Create logs directory
 RUN mkdir -p logs
 
 # Build TypeScript
 RUN npm run build
+
+# Remove dev dependencies to reduce image size
+RUN npm prune --production
 
 # Set NODE_ENV
 ENV NODE_ENV production
