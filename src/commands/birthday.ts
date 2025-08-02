@@ -4,8 +4,19 @@ import imageGenerator from '../utils/imageGenerator';
 import logger from '../utils/logger';
 
 export default {
-  name: '/birthday',
-  description: 'Generate birthday wishes and images',
+  metadata: {
+    name: '/birthday',
+    description: 'Generate birthday wishes and images',
+    category: 'Fun',
+    usage: '/birthday <targetChannel> <userData>',
+    examples: ['/birthday 123456789 userData'],
+    permissions: [],
+    cooldown: 10,
+    enabled: true,
+    aliases: ['/bday', '/birthday-wish'],
+    requiresGuild: true,
+    requiresDM: false,
+  },
   async execute(client: Client, targetChannel: string, userData: UserData): Promise<void> {
     try {
       logger.command('birthday', userData._id);
@@ -29,5 +40,11 @@ export default {
       logger.errorWithContext('Failed to execute birthday command', error);
       throw error;
     }
+  },
+  validate(args: any[]): boolean | string {
+    if (args.length < 2) {
+      return 'Birthday command requires target channel and user data';
+    }
+    return true;
   },
 }; 

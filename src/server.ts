@@ -41,32 +41,21 @@ class Application {
   private setupEventHandlers(): void {
     // Bot ready event
     this.bot.client.on('ready', async () => {
-      const command = this.bot.commands.get('/onReady');
+      const command = this.bot.getCommand('/onReady');
       if (command) {
         await command.execute(this.bot.client);
       }
       
       // Start birthday notification cron job
-      const bdayNotifyCommand = this.bot.commands.get('/bdayNotify');
+      const bdayNotifyCommand = this.bot.getCommand('/bdayNotify');
       if (bdayNotifyCommand) {
         await bdayNotifyCommand.execute(this.bot.client);
       }
     });
 
-    // Message handling
-    this.bot.client.on('messageCreate', async (message) => {
-      await this.bot.handleMessage(message);
-    });
-
-    // Reaction handling
-    this.bot.client.on('messageReactionAdd', async (reaction, user) => {
-      await reaction.fetch();
-      await this.bot.handleReaction(reaction as any, user as any);
-    });
-
     // Guild member add
     this.bot.client.on('guildMemberAdd', async (member) => {
-      const command = this.bot.commands.get('/welcome');
+      const command = this.bot.getCommand('/welcome');
       if (command) {
         await command.execute(this.bot.client, member);
       }

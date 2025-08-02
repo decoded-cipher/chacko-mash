@@ -2,8 +2,19 @@ import { Client } from 'discord.js';
 import logger from '../utils/logger';
 
 export default {
-  name: '/onReady',
-  description: 'Bot ready event handler',
+  metadata: {
+    name: '/onReady',
+    description: 'Bot ready event handler',
+    category: 'System',
+    usage: '/onReady',
+    examples: ['/onReady'],
+    permissions: [],
+    cooldown: 0,
+    enabled: true,
+    aliases: ['/ready', '/startup'],
+    requiresGuild: false,
+    requiresDM: false,
+  },
   async execute(client: Client): Promise<void> {
     try {
       // Set bot presence
@@ -35,5 +46,9 @@ export default {
     } catch (error) {
       logger.error('Failed to execute onReady command:', error);
     }
+  },
+  validate(_args: any[]): boolean | string {
+    // OnReady command doesn't require additional arguments
+    return true;
   },
 }; 

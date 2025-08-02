@@ -4,8 +4,19 @@ import apiClient from '../services/apiClient';
 import logger from '../utils/logger';
 
 export default {
-  name: '/bdayNotify',
-  description: 'Daily birthday notification cron job',
+  metadata: {
+    name: '/bdayNotify',
+    description: 'Daily birthday notification cron job',
+    category: 'System',
+    usage: '/bdayNotify',
+    examples: ['/bdayNotify'],
+    permissions: [],
+    cooldown: 0,
+    enabled: true,
+    aliases: ['/birthday-notify', '/bday-cron'],
+    requiresGuild: false,
+    requiresDM: false,
+  },
   async execute(client: Client): Promise<void> {
     try {
       new CronJob('0 6 * * *', async () => {
@@ -68,5 +79,17 @@ export default {
     } catch (error) {
       logger.error('Failed to start birthday notification job:', error);
     }
+  },
+  validate(_args: any[]): boolean | string {
+    // BdayNotify command doesn't require additional arguments
+    return true;
+  },
+  onLoad(): Promise<void> {
+    logger.info('Birthday notification system loaded');
+    return Promise.resolve();
+  },
+  onUnload(): Promise<void> {
+    logger.info('Birthday notification system unloaded');
+    return Promise.resolve();
   },
 }; 

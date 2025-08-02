@@ -1,12 +1,13 @@
-import { Client, Collection, Message, MessageReaction, User } from 'discord.js';
-import { readdir } from 'fs/promises';
+import { Client, Message, MessageReaction, User } from 'discord.js';
 import path from 'path';
-import { Command } from '../types';
+import { CommandRegistry } from './CommandRegistry';
+import { CommandExecutor } from './CommandExecutor';
 import logger from '../utils/logger';
 
 class DiscordBot {
   public client: Client;
-  public commands: Collection<string, Command>;
+  private commandRegistry: CommandRegistry;
+  private commandExecutor: CommandExecutor;
   private readonly prefix = '$';
 
   constructor() {
@@ -20,14 +21,28 @@ class DiscordBot {
       ],
     });
 
-    this.commands = new Collection();
+    // Initialize command registry
+    const commandsPath = path.join(__dirname, '../commands');
+    this.commandRegistry = new CommandRegistry(commandsPath);
+    this.commandExecutor = new CommandExecutor(this.commandRegistry, this.prefix);
+
+    // Make client globally available for command executor
+    (global as any).discordClient = this.client;
   }
 
   async initialize(): Promise<void> {
     try {
       logger.section('Discord Bot Initialization');
-      await this.loadCommands();
+      
+      // Initialize command registry
+      await this.commandRegistry.initialize();
+      
+      // Set up event handlers
+      this.setupEventHandlers();
+      
+      // Login to Discord
       await this.client.login(process.env.DISCORDJS_BOT_TOKEN);
+      
       logger.success('Discord bot initialized successfully');
     } catch (error) {
       logger.errorWithContext('Failed to initialize Discord bot', error);
@@ -35,225 +50,93 @@ class DiscordBot {
     }
   }
 
-  private async loadCommands(): Promise<void> {
-    try {
-      const commandsPath = path.join(__dirname, '../commands');
-      const commandFiles = await readdir(commandsPath);
-
-      for (const file of commandFiles) {
-        // Skip non-command files
-        if (!file.endsWith('.ts') && !file.endsWith('.js')) continue;
-        if (file.startsWith('.') || file.includes('.d.ts')) continue;
-
-        try {
-          const command = await import(path.join(commandsPath, file));
-          if (command.default && command.default.name && command.default.execute) {
-            this.commands.set(command.default.name, command.default);
-            logger.info(`Loaded command: ${command.default.name}`);
-          } else {
-            logger.warn(`Skipping invalid command file: ${file}`);
-          }
-        } catch (importError) {
-          logger.error(`Failed to import command file ${file}:`, importError);
-        }
-      }
-
-      logger.success(`Loaded ${this.commands.size} commands`);
-    } catch (error) {
-      logger.errorWithContext('Failed to load commands', error);
-      throw error;
-    }
-  }
-
-  async handleMessage(message: Message): Promise<void> {
-    try {
-      // Ignore bot messages
-      if (message.author.bot) return;
-
-      // Handle DM messages
-      if (!message.guild) {
-        await this.handleDirectMessage(message);
-        return;
-      }
-
-      // Handle guild messages with prefix
-      if (message.content.startsWith(this.prefix)) {
-        await this.handlePrefixedCommand(message);
-        return;
-      }
-
-      // Handle slash commands
-      if (message.content.startsWith('/')) {
-        await this.handleSlashCommand(message);
-        return;
-      }
-    } catch (error) {
-      logger.error('Error handling message:', error);
+  private setupEventHandlers(): void {
+    // Message event handler
+    this.client.on('messageCreate', async (message: Message) => {
       try {
-        await message.reply('An error occurred while processing your command.');
-      } catch (replyError) {
-        logger.error('Failed to send error reply:', replyError);
-      }
-    }
-  }
+        // Ignore bot messages
+        if (message.author.bot) return;
 
-  private async handleDirectMessage(message: Message): Promise<void> {
-    if (message.content.startsWith('/edit-profile')) {
-      const command = this.commands.get('/profile');
-      if (command) {
-        await command.execute(this.client, message);
-      }
-    } else {
-      // Forward DM to target channel
-      const targetChannel = this.client.channels.cache.get(process.env.TARGET_CHANNEL || '');
-      if (targetChannel && 'send' in targetChannel) {
-        const embed = {
-          color: 0x4b9fc3,
-          author: {
-            name: message.author.username,
-            icon_url: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`,
-          },
-          description: message.content,
-          footer: {
-            text: new Date().toString(),
-          },
-        };
-        await targetChannel.send({ embeds: [embed] });
-      }
-    }
-  }
-
-  private async handlePrefixedCommand(message: Message): Promise<void> {
-    try {
-      // Check permissions
-      const hasPermission = message.member?.roles.cache.some(
-        role => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02
-      );
-
-      if (!hasPermission) {
-        await message.reply(`You are not allowed to use this command. Please contact <@&${process.env.PRIORITY_ROLE_01}> for more details.`);
-        return;
-      }
-
-      const [cmdName, targetChannel, ...args] = message.content
-        .trim()
-        .substring(this.prefix.length)
-        .split(' | ');
-
-      const cleanTargetChannel = targetChannel?.replace(/[^0-9\s]/g, '') || '';
-
-      if (cmdName) {
-        logger.command(cmdName, message.author.id);
-      }
-
-      switch (cmdName) {
-        case 'bot':
-          await this.handleBotCommand(message, cleanTargetChannel, args.join(' '));
-          break;
-        case 'bday':
-          await this.handleBirthdayCommand(message, cleanTargetChannel, args.join(' '));
-          break;
-        case 'role':
-          await this.handleRoleCommand(message, cleanTargetChannel, args.join(' '));
-          break;
-        case 'dm':
-          await this.handleDmCommand(message, cleanTargetChannel, args.join(' '));
-          break;
-        default:
-          await message.reply('Invalid command format. Use `/help` to see available commands.');
-      }
-    } catch (error) {
-      logger.errorWithContext('Error handling prefixed command', error);
-      await message.reply('An error occurred while processing your command.');
-    }
-  }
-
-  private async handleSlashCommand(message: Message): Promise<void> {
-    const commandName = message.content.split(' ')[0];
-    if (!commandName) return;
-    
-    const command = this.commands.get(commandName);
-
-    if (command) {
-      logger.command(commandName, message.author.id);
-      await command.execute(this.client, message);
-    } else {
-      logger.warn(`Command not found: ${commandName}`);
-      await message.reply(`Command \`${commandName}\` not found. Use \`/help\` to see available commands.`);
-    }
-  }
-
-  private async handleBotCommand(_message: Message, targetChannel: string, content: string): Promise<void> {
-    const channel = this.client.channels.cache.get(targetChannel);
-    if (channel && 'send' in channel) {
-      await channel.send(content);
-    }
-  }
-
-  private async handleBirthdayCommand(message: Message, targetChannel: string, userId: string): Promise<void> {
-    try {
-      const apiClient = await import('../services/apiClient');
-      const userData = await apiClient.default.getExtUserData(userId);
-      const command = this.commands.get('/birthday');
-      if (command) {
-        await command.execute(this.client, targetChannel, userData);
-      }
-    } catch (error) {
-      logger.error('Birthday command error:', error);
-      await message.reply('Failed to process birthday command.');
-    }
-  }
-
-  private async handleRoleCommand(message: Message, targetChannel: string, args: string): Promise<void> {
-    const command = this.commands.get('/roles');
-    if (command) {
-      await command.execute(this.client, message, targetChannel, args);
-    }
-  }
-
-  private async handleDmCommand(message: Message, targetChannel: string, args: string): Promise<void> {
-    const command = this.commands.get('/dmUser');
-    if (command) {
-      await command.execute(this.client, message, targetChannel, args);
-    }
-  }
-
-  async handleReaction(reaction: MessageReaction, user: User): Promise<void> {
-    try {
-      if (reaction.message.channel?.id === process.env.HF_CHANNEL && reaction.emoji.name === 'hacktoberfest') {
-        const member = reaction.message.guild?.members.cache.get(user.id);
-        const hasPermission = member?.roles.cache.some(
-          (role: any) => role.id === process.env.PRIORITY_ROLE_01 || role.id === process.env.PRIORITY_ROLE_02
-        );
-
-        if (!hasPermission) {
-          await reaction.users.remove(user.id);
-          await user.send(`You are not allowed to use this reaction in <#${process.env.HF_CHANNEL}> channel.`);
+        // Handle DM messages
+        if (!message.guild) {
+          await this.commandExecutor.executeDirectMessage(message);
           return;
         }
 
-        if (reaction.count === 1) {
-          const command = this.commands.get('/hacktoberfest');
-          if (command) {
-            await command.execute(this.client, reaction.message, reaction, user);
-          }
-        } else {
-          await reaction.users.remove(user.id);
-          await user.send('This message is already verified by an X-Men or the Server Moderator.');
+        // Handle guild messages with prefix
+        if (message.content.startsWith(this.prefix)) {
+          await this.commandExecutor.executePrefixCommand(message);
+          return;
+        }
+
+        // Handle slash commands
+        if (message.content.startsWith('/')) {
+          await this.commandExecutor.executeSlashCommand(message);
+          return;
+        }
+      } catch (error) {
+        logger.error('Error handling message:', error);
+        try {
+          await message.reply('An error occurred while processing your command.');
+        } catch (replyError) {
+          logger.error('Failed to send error reply:', replyError);
         }
       }
-    } catch (error) {
-      logger.error('Error handling reaction:', error);
-    }
+    });
+
+    // Reaction event handler
+    this.client.on('messageReactionAdd', async (reaction, user) => {
+      try {
+        if (reaction.partial) {
+          await reaction.fetch();
+        }
+        await this.commandExecutor.executeReaction(reaction as MessageReaction, user as User);
+      } catch (error) {
+        logger.error('Error handling reaction:', error);
+      }
+    });
+
+    // Ready event handler
+    this.client.once('ready', () => {
+      logger.success(`Logged in as ${this.client.user?.tag}`);
+    });
+
+    // Error event handler
+    this.client.on('error', (error) => {
+      logger.error('Discord client error:', error);
+    });
+
+    // Disconnect event handler
+    this.client.on('disconnect', () => {
+      logger.warn('Discord client disconnected');
+    });
   }
 
   async shutdown(): Promise<void> {
     try {
+      // Shutdown command registry
+      await this.commandRegistry.shutdown();
+      
+      // Destroy Discord client
       await this.client.destroy();
+      
       logger.info('Discord bot shutdown successfully');
     } catch (error) {
       logger.error('Error during Discord bot shutdown:', error);
     }
+  }
+
+  // Public methods for external access
+  getCommands() {
+    return this.commandRegistry.getAll();
+  }
+
+  getCommand(name: string) {
+    return this.commandRegistry.get(name);
+  }
+
+  async reloadCommands() {
+    await this.commandRegistry.reload();
   }
 }
 

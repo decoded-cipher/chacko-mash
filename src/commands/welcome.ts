@@ -2,8 +2,19 @@ import { Client, GuildMember } from 'discord.js';
 import logger from '../utils/logger';
 
 export default {
-  name: '/welcome',
-  description: 'Welcome new members',
+  metadata: {
+    name: '/welcome',
+    description: 'Welcome new members',
+    category: 'System',
+    usage: '/welcome <guildMember>',
+    examples: ['/welcome'],
+    permissions: [],
+    cooldown: 0,
+    enabled: true,
+    aliases: ['/welcome-user'],
+    requiresGuild: true,
+    requiresDM: false,
+  },
   async execute(client: Client, guildMember: GuildMember): Promise<void> {
     try {
       const welcomeImages = [
@@ -47,5 +58,12 @@ export default {
     } catch (error) {
       logger.error('Failed to execute welcome command:', error);
     }
+  },
+  validate(args: any[]): boolean | string {
+    // Welcome command requires a GuildMember object
+    if (args.length < 1) {
+      return 'Welcome command requires a guild member';
+    }
+    return true;
   },
 }; 

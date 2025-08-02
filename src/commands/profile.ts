@@ -2,8 +2,19 @@ import { Client, Message } from 'discord.js';
 import logger from '../utils/logger';
 
 export default {
-  name: '/profile',
-  description: 'Edit user profile',
+  metadata: {
+    name: '/profile',
+    description: 'Edit user profile',
+    category: 'User',
+    usage: '/profile',
+    examples: ['/profile', '/edit-profile'],
+    permissions: [],
+    cooldown: 30,
+    enabled: true,
+    aliases: ['/edit-profile', '/myprofile'],
+    requiresGuild: false,
+    requiresDM: true,
+  },
   async execute(_client: Client, message: Message): Promise<void> {
     try {
       if (!message.guild) {
@@ -30,5 +41,9 @@ export default {
       logger.error('Failed to execute profile command:', error);
       await message.reply('An error occurred while processing your profile update.');
     }
+  },
+  validate(_args: any[]): boolean | string {
+    // Profile command doesn't require additional arguments
+    return true;
   },
 }; 

@@ -2,9 +2,20 @@ import { Client, Message, EmbedBuilder } from 'discord.js';
 import logger from '../utils/logger';
 
 export default {
-  name: '/help',
-  description: 'Show available commands',
-  async execute(_client: Client, message: Message): Promise<void> {
+  metadata: {
+    name: '/help',
+    description: 'Show available commands',
+    category: 'Utility',
+    usage: '/help [category]',
+    examples: ['/help', '/help Utility', '/help Admin'],
+    permissions: [],
+    cooldown: 5,
+    enabled: true,
+    aliases: ['/h', '/commands'],
+    requiresGuild: false,
+    requiresDM: false,
+  },
+  async execute(_client: Client, message: Message, _category?: string): Promise<void> {
     try {
       const data = [
         {
@@ -51,5 +62,9 @@ export default {
       logger.errorWithContext('Failed to execute help command', error);
       await message.reply('An error occurred while displaying help information.');
     }
+  },
+  validate(_args: any[]): boolean | string {
+    // Help command accepts optional category argument
+    return true;
   },
 }; 

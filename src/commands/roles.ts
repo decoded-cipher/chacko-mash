@@ -2,8 +2,19 @@ import { Client, Message } from 'discord.js';
 import logger from '../utils/logger';
 
 export default {
-  name: '/roles',
-  description: 'Assign server roles',
+  metadata: {
+    name: '/roles',
+    description: 'Assign server roles',
+    category: 'Admin',
+    usage: '/roles <targetRole> <users...>',
+    examples: ['/roles 123456789 @user1 @user2', '/roles 987654321 @user1'],
+    permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
+    cooldown: 5,
+    enabled: true,
+    aliases: ['/role', '/assign-role'],
+    requiresGuild: true,
+    requiresDM: false,
+  },
   async execute(client: Client, message: Message, targetRole: string, args: string): Promise<void> {
     try {
       if (!message.guild) {
@@ -41,5 +52,11 @@ export default {
       logger.error('Failed to execute roles command:', error);
       await message.reply('An error occurred while managing roles.');
     }
+  },
+  validate(args: any[]): boolean | string {
+    if (args.length < 2) {
+      return 'Roles command requires target role and at least one user';
+    }
+    return true;
   },
 }; 

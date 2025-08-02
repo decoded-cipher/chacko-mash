@@ -6,8 +6,19 @@ import emailService from '../utils/emailService';
 import logger from '../utils/logger';
 
 export default {
-  name: '/hacktoberfest',
-  description: 'Process hacktoberfest certificate generation',
+  metadata: {
+    name: '/hacktoberfest',
+    description: 'Process hacktoberfest certificate generation',
+    category: 'Special',
+    usage: '/hacktoberfest',
+    examples: ['/hacktoberfest'],
+    permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
+    cooldown: 60,
+    enabled: true,
+    aliases: ['/hf', '/hacktober'],
+    requiresGuild: true,
+    requiresDM: false,
+  },
   async execute(client: Client, _message: any, _reaction: any, user: User): Promise<void> {
     try {
       logger.info('Processing hacktoberfest command', { userId: user.id });
@@ -76,5 +87,9 @@ export default {
       logger.error('Failed to execute hacktoberfest command:', error);
       throw error;
     }
+  },
+  validate(_args: any[]): boolean | string {
+    // Hacktoberfest command doesn't require additional arguments
+    return true;
   },
 }; 

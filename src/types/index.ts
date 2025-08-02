@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import { Client, Message, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 
 export interface UserData {
   _id: string;
@@ -23,12 +23,38 @@ export interface HacktoberfestData {
   email?: string;
 }
 
-export interface Command {
+export interface CommandMetadata {
   name: string;
   description: string;
-  execute: (client: Client, ...args: any[]) => Promise<void> | void;
+  category: string;
+  usage: string;
+  examples: string[];
   permissions?: string[];
   cooldown?: number;
+  enabled: boolean;
+  aliases?: string[];
+  requiresGuild?: boolean;
+  requiresDM?: boolean;
+}
+
+export interface Command {
+  metadata: CommandMetadata;
+  slashCommand?: SlashCommandBuilder;
+  execute: (client: Client, ...args: any[]) => Promise<void> | void;
+  validate?: (args: any[]) => boolean | string;
+  onLoad?: () => Promise<void>;
+  onUnload?: () => Promise<void>;
+}
+
+export interface CommandRegistry {
+  commands: Map<string, Command>;
+  categories: Map<string, Command[]>;
+  register: (command: Command) => void;
+  unregister: (name: string) => void;
+  get: (name: string) => Command | undefined;
+  getAll: () => Command[];
+  getByCategory: (category: string) => Command[];
+  reload: () => Promise<void>;
 }
 
 export interface Event {

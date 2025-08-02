@@ -2,8 +2,19 @@ import { Client, Message } from 'discord.js';
 import logger from '../utils/logger';
 
 export default {
-  name: '/dmUser',
-  description: 'Send direct message to user or role',
+  metadata: {
+    name: '/dmUser',
+    description: 'Send direct message to user or role',
+    category: 'Admin',
+    usage: '/dmUser <targetRole/users> <message>',
+    examples: ['/dmUser 123456789 Hello!', '/dmUser @role1 @user1 Hello everyone!'],
+    permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
+    cooldown: 10,
+    enabled: true,
+    aliases: ['/dm', '/direct-message'],
+    requiresGuild: true,
+    requiresDM: false,
+  },
   async execute(client: Client, message: Message, targetRole: string, args: string): Promise<void> {
     try {
       if (!message.guild) {
@@ -52,5 +63,11 @@ export default {
       logger.error('Failed to execute dmUser command:', error);
       await message.reply('An error occurred while sending the DM.');
     }
+  },
+  validate(args: any[]): boolean | string {
+    if (args.length < 2) {
+      return 'DM command requires target users/roles and a message';
+    }
+    return true;
   },
 }; 
