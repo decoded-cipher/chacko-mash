@@ -3,13 +3,14 @@ import handlebars from 'handlebars';
 import fs from 'fs/promises';
 import path from 'path';
 import { HacktoberfestData } from '../types';
+import logger from './logger';
 
 class EmailService {
   private transporter?: nodemailer.Transporter;
 
   constructor() {
     if (!process.env.EMAIL_SERVICE || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.warn('Email service configuration missing. Email functionality will be disabled.');
+      logger.warn('Email service configuration missing. Email functionality will be disabled.');
       return;
     }
 
@@ -53,13 +54,13 @@ class EmailService {
       };
 
       await this.transporter.sendMail(mailOptions);
-      console.log('Hacktoberfest email sent successfully', { 
+      logger.info('Hacktoberfest email sent successfully', { 
         name: data.name, 
         email: data.email, 
         certificateId: data.certificateId 
       });
     } catch (error) {
-      console.error('Failed to send hacktoberfest email:', error);
+      logger.error('Failed to send hacktoberfest email:', error);
       throw new Error('Failed to send email');
     }
   }
@@ -67,14 +68,14 @@ class EmailService {
   async verifyConnection(): Promise<boolean> {
     try {
       if (!this.transporter) {
-        console.warn('Email service not configured');
+        logger.warn('Email service not configured');
         return false;
       }
       await this.transporter.verify();
-      console.log('Email service connection verified');
+      logger.info('Email service connection verified');
       return true;
     } catch (error) {
-      console.error('Email service connection failed:', error);
+      logger.error('Email service connection failed:', error);
       return false;
     }
   }

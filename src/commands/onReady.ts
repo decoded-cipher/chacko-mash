@@ -1,4 +1,5 @@
 import { Client } from 'discord.js';
+import logger from '../utils/logger';
 
 export default {
   name: '/onReady',
@@ -14,7 +15,7 @@ export default {
         }]
       });
 
-      console.log(`Logged in as ${client.user?.username}!`);
+      logger.info(`Logged in as ${client.user?.username}!`);
 
       // Send startup messages
       // const lobbyChannel = client.channels.cache.get(process.env.LOBBY_CHANNEL || '');
@@ -29,10 +30,10 @@ export default {
       //   await targetChannel.send("Server Time : " + new Date().toString());
       // }
 
-      console.log('Bot ready event executed successfully');
+      logger.info('Bot ready event executed successfully');
 
     } catch (error) {
-      console.error('Failed to execute onReady command:', error);
+      logger.error('Failed to execute onReady command:', error);
     }
   },
 }; 

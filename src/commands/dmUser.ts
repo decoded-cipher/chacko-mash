@@ -1,4 +1,5 @@
 import { Client, Message } from 'discord.js';
+import logger from '../utils/logger';
 
 export default {
   name: '/dmUser',
@@ -40,7 +41,7 @@ export default {
         }
       }
 
-      console.log('DM command executed', {
+      logger.info('DM command executed', {
         targetRole,
         message: args,
         users: finalUsers,
@@ -48,7 +49,7 @@ export default {
       });
 
     } catch (error) {
-      console.error('Failed to execute dmUser command:', error);
+      logger.error('Failed to execute dmUser command:', error);
       await message.reply('An error occurred while sending the DM.');
     }
   },

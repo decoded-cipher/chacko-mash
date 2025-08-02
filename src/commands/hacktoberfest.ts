@@ -3,13 +3,14 @@ import { HacktoberfestData } from '../types';
 import apiClient from '../services/apiClient';
 import imageGenerator from '../utils/imageGenerator';
 import emailService from '../utils/emailService';
+import logger from '../utils/logger';
 
 export default {
   name: '/hacktoberfest',
   description: 'Process hacktoberfest certificate generation',
   async execute(client: Client, _message: any, _reaction: any, user: User): Promise<void> {
     try {
-      console.log('Processing hacktoberfest command', { userId: user.id });
+      logger.info('Processing hacktoberfest command', { userId: user.id });
 
       // Get existing certificates
       const certificates = await apiClient.getHacktoberfestData();
@@ -66,13 +67,13 @@ export default {
         await discordUser.send({ embeds: [userEmbed] });
       }
 
-      console.log('Hacktoberfest command executed successfully', {
+      logger.info('Hacktoberfest command executed successfully', {
         userId: data.id,
         certificateId: data.certificateId,
         name: data.name,
       });
     } catch (error) {
-      console.error('Failed to execute hacktoberfest command:', error);
+      logger.error('Failed to execute hacktoberfest command:', error);
       throw error;
     }
   },

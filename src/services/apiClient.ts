@@ -1,12 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { UserData, HacktoberfestData, ApiResponse } from '../types';
+import logger from '../utils/logger';
 
 class ApiClient {
   private client?: AxiosInstance;
 
   constructor() {
     if (!process.env.API_BASE_URL || !process.env.INOVUS_AUTH_TOKEN) {
-      console.warn('API configuration missing. API functionality will be disabled.');
+      logger.warn('API configuration missing. API functionality will be disabled.');
       return;
     }
 
@@ -30,7 +31,7 @@ class ApiClient {
       });
       return response.data;
     } catch (error) {
-      console.error('Failed to get user data:', { id, error });
+      logger.error('Failed to get user data:', { id, error });
       throw new Error(`Failed to fetch user data for ID: ${id}`);
     }
   }
@@ -45,7 +46,7 @@ class ApiClient {
       });
       return response.data;
     } catch (error) {
-      console.error('Failed to get birthday users:', { day, month, error });
+      logger.error('Failed to get birthday users:', { day, month, error });
       throw new Error(`Failed to fetch birthday users for ${day}/${month}`);
     }
   }
@@ -58,7 +59,7 @@ class ApiClient {
       const response: AxiosResponse<ApiResponse> = await this.client.post('/hacktoberfest', data);
       return response.data;
     } catch (error) {
-      console.error('Failed to post hacktoberfest data:', { data, error });
+      logger.error('Failed to post hacktoberfest data:', { data, error });
       throw new Error('Failed to post hacktoberfest data');
     }
   }
@@ -71,7 +72,7 @@ class ApiClient {
       const response: AxiosResponse<HacktoberfestData[]> = await this.client.get('/hacktoberfest');
       return response.data;
     } catch (error) {
-      console.error('Failed to get hacktoberfest data:', { error });
+      logger.error('Failed to get hacktoberfest data:', { error });
       throw new Error('Failed to fetch hacktoberfest data');
     }
   }

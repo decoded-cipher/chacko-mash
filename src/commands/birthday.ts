@@ -1,13 +1,14 @@
 import { Client, TextChannel } from 'discord.js';
 import { UserData } from '../types';
 import imageGenerator from '../utils/imageGenerator';
+import logger from '../utils/logger';
 
 export default {
   name: '/birthday',
   description: 'Generate birthday wishes and images',
   async execute(client: Client, targetChannel: string, userData: UserData): Promise<void> {
     try {
-      console.log('Processing birthday command', { userId: userData._id, name: userData.name });
+      logger.command('birthday', userData._id);
 
       // Generate birthday image using the separate service
       const imagePath = await imageGenerator.generateBirthdayImage(userData);
@@ -23,13 +24,9 @@ export default {
       await channel.send({ files: [imagePath] });
 
       const age = new Date().getFullYear() - userData.dob.year;
-      console.log('Birthday command executed successfully', { 
-        userId: userData._id, 
-        channel: targetChannel,
-        age: age
-      });
+      logger.success(`Birthday command executed successfully for ${userData.name} (age: ${age})`);
     } catch (error) {
-      console.error('Failed to execute birthday command:', error);
+      logger.errorWithContext('Failed to execute birthday command', error);
       throw error;
     }
   },

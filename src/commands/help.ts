@@ -1,4 +1,5 @@
 import { Client, Message, EmbedBuilder } from 'discord.js';
+import logger from '../utils/logger';
 
 export default {
   name: '/help',
@@ -44,13 +45,10 @@ export default {
         }
       }
 
-      console.log('Help command executed', {
-        userId: message.author.id,
-        username: message.author.username
-      });
+      logger.command('help', message.author.id);
 
     } catch (error) {
-      console.error('Failed to execute help command:', error);
+      logger.errorWithContext('Failed to execute help command', error);
       await message.reply('An error occurred while displaying help information.');
     }
   },

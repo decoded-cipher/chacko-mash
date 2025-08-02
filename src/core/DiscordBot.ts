@@ -2,6 +2,7 @@ import { Client, Collection, Message, MessageReaction, User } from 'discord.js';
 import { readdir } from 'fs/promises';
 import path from 'path';
 import { Command } from '../types';
+import logger from '../utils/logger';
 
 class DiscordBot {
   public client: Client;
@@ -24,11 +25,12 @@ class DiscordBot {
 
   async initialize(): Promise<void> {
     try {
+      logger.section('Discord Bot Initialization');
       await this.loadCommands();
       await this.client.login(process.env.DISCORDJS_BOT_TOKEN);
-      console.log('Discord bot initialized successfully');
+      logger.success('Discord bot initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize Discord bot:', error);
+      logger.errorWithContext('Failed to initialize Discord bot', error);
       throw error;
     }
   }
@@ -47,18 +49,18 @@ class DiscordBot {
           const command = await import(path.join(commandsPath, file));
           if (command.default && command.default.name && command.default.execute) {
             this.commands.set(command.default.name, command.default);
-            console.log(`Loaded command: ${command.default.name}`);
+            logger.info(`Loaded command: ${command.default.name}`);
           } else {
-            console.warn(`Skipping invalid command file: ${file}`);
+            logger.warn(`Skipping invalid command file: ${file}`);
           }
         } catch (importError) {
-          console.error(`Failed to import command file ${file}:`, importError);
+          logger.error(`Failed to import command file ${file}:`, importError);
         }
       }
 
-      console.log(`Loaded ${this.commands.size} commands`);
+      logger.success(`Loaded ${this.commands.size} commands`);
     } catch (error) {
-      console.error('Failed to load commands:', error);
+      logger.errorWithContext('Failed to load commands', error);
       throw error;
     }
   }
@@ -86,11 +88,11 @@ class DiscordBot {
         return;
       }
     } catch (error) {
-      console.error('Error handling message:', error);
+      logger.error('Error handling message:', error);
       try {
         await message.reply('An error occurred while processing your command.');
       } catch (replyError) {
-        console.error('Failed to send error reply:', replyError);
+        logger.error('Failed to send error reply:', replyError);
       }
     }
   }
@@ -140,13 +142,9 @@ class DiscordBot {
 
       const cleanTargetChannel = targetChannel?.replace(/[^0-9\s]/g, '') || '';
 
-      console.log(`Executing prefixed command: ${cmdName}`, {
-        userId: message.author.id,
-        username: message.author.username,
-        channel: message.channel.id,
-        targetChannel: cleanTargetChannel,
-        args: args.join(' ')
-      });
+      if (cmdName) {
+        logger.command(cmdName, message.author.id);
+      }
 
       switch (cmdName) {
         case 'bot':
@@ -165,7 +163,7 @@ class DiscordBot {
           await message.reply('Invalid command format. Use `/help` to see available commands.');
       }
     } catch (error) {
-      console.error('Error handling prefixed command:', error);
+      logger.errorWithContext('Error handling prefixed command', error);
       await message.reply('An error occurred while processing your command.');
     }
   }
@@ -177,14 +175,10 @@ class DiscordBot {
     const command = this.commands.get(commandName);
 
     if (command) {
-      console.log(`Executing slash command: ${commandName}`, {
-        userId: message.author.id,
-        username: message.author.username,
-        channel: message.channel.id
-      });
+      logger.command(commandName, message.author.id);
       await command.execute(this.client, message);
     } else {
-      console.log(`Command not found: ${commandName}`);
+      logger.warn(`Command not found: ${commandName}`);
       await message.reply(`Command \`${commandName}\` not found. Use \`/help\` to see available commands.`);
     }
   }
@@ -205,7 +199,7 @@ class DiscordBot {
         await command.execute(this.client, targetChannel, userData);
       }
     } catch (error) {
-      console.error('Birthday command error:', error);
+      logger.error('Birthday command error:', error);
       await message.reply('Failed to process birthday command.');
     }
   }
@@ -249,16 +243,16 @@ class DiscordBot {
         }
       }
     } catch (error) {
-      console.error('Error handling reaction:', error);
+      logger.error('Error handling reaction:', error);
     }
   }
 
   async shutdown(): Promise<void> {
     try {
       await this.client.destroy();
-      console.log('Discord bot shutdown successfully');
+      logger.info('Discord bot shutdown successfully');
     } catch (error) {
-      console.error('Error during Discord bot shutdown:', error);
+      logger.error('Error during Discord bot shutdown:', error);
     }
   }
 }

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import DiscordBot from './core/DiscordBot';
 import HealthServer from './services/healthServer';
+import logger from './utils/logger';
 
 // Load environment variables
 dotenv.config();
@@ -16,7 +17,7 @@ class Application {
 
   async start(): Promise<void> {
     try {
-      console.log('Starting Chacko Mash Discord Bot...');
+      logger.section('Application Startup');
 
       // Start health server
       this.healthServer.start();
@@ -30,9 +31,9 @@ class Application {
       // Graceful shutdown handling
       this.setupGracefulShutdown();
 
-      console.log('Application started successfully');
+      logger.success('Application started successfully');
     } catch (error) {
-      console.error('Failed to start application:', error);
+      logger.errorWithContext('Failed to start application', error);
       process.exit(1);
     }
   }
@@ -73,17 +74,18 @@ class Application {
 
     // Error handling
     this.bot.client.on('error', (error) => {
-      console.error('Discord client error:', error);
+      logger.errorWithContext('Discord client error', error);
     });
 
     this.bot.client.on('warn', (warning) => {
-      console.warn('Discord client warning:', warning);
+      logger.warn('Discord client warning:', warning);
     });
   }
 
   private setupGracefulShutdown(): void {
     const shutdown = async (signal: string) => {
-      console.log(`Received ${signal}. Starting graceful shutdown...`);
+      logger.section('Graceful Shutdown');
+      logger.info(`Received ${signal}. Starting graceful shutdown...`);
 
       try {
         // Stop health server
@@ -92,10 +94,10 @@ class Application {
         // Shutdown Discord bot
         await this.bot.shutdown();
 
-        console.log('Graceful shutdown completed');
+        logger.success('Graceful shutdown completed');
         process.exit(0);
       } catch (error) {
-        console.error('Error during shutdown:', error);
+        logger.errorWithContext('Error during shutdown', error);
         process.exit(1);
       }
     };
@@ -103,11 +105,11 @@ class Application {
     process.on('SIGTERM', () => shutdown('SIGTERM'));
     process.on('SIGINT', () => shutdown('SIGINT'));
     process.on('uncaughtException', (error) => {
-      console.error('Uncaught exception:', error);
+      logger.error('Uncaught exception:', error);
       shutdown('uncaughtException');
     });
     process.on('unhandledRejection', (reason, promise) => {
-      console.error('Unhandled rejection:', { reason, promise });
+      logger.error('Unhandled rejection:', { reason, promise });
       shutdown('unhandledRejection');
     });
   }
@@ -116,6 +118,6 @@ class Application {
 // Start the application
 const app = new Application();
 app.start().catch((error) => {
-  console.error('Failed to start application:', error);
+  logger.error('Failed to start application:', error);
   process.exit(1);
 }); 

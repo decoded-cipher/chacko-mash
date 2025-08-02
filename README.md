@@ -137,6 +137,8 @@ The application uses Winston for structured logging:
 - **File Logs**: `logs/error.log` and `logs/combined.log`
 - **Console Logs**: Development environment only
 - **Structured Format**: JSON with timestamps
+- **Log Levels**: error, warn, info, http, debug
+- **Environment-based**: Debug level in development, warn level in production
 
 ## 🔧 Configuration
 

@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { registerFont, createCanvas, loadImage } from 'canvas';
 import { ImageGenerationData, UserData } from '../types';
+import logger from './logger';
 
 class ImageGenerator {
   private readonly width = 1920;
@@ -16,9 +17,9 @@ class ImageGenerator {
       registerFont('./assets/fonts/Gilroy-SemiBold.ttf', { family: 'Gilroy SemiBold' });
       registerFont('./assets/fonts/LithosPro-Regular.otf', { family: 'Lithos Pro Regular' });
       registerFont('./assets/fonts/alex-brush.regular.ttf', { family: 'Alex Brush' });
-      console.log(`Fonts registered successfully`);
+      logger.success('Fonts registered successfully');
     } catch (error) {
-      console.error('Failed to register fonts:', error);
+      logger.errorWithContext('Failed to register fonts', error);
     }
   }
 
@@ -52,10 +53,10 @@ class ImageGenerator {
       const outputPath = './assets/hacktoberfest/certificate.pdf';
       await fs.writeFile(outputPath, buffer);
 
-      console.log('Hacktoberfest certificate generated successfully', { name: data.name, certificateId: data.certificateId });
+      logger.success(`Hacktoberfest certificate generated successfully for ${data.name}`);
       return outputPath;
     } catch (error) {
-      console.error('Failed to generate hacktoberfest certificate:', error);
+      logger.errorWithContext('Failed to generate hacktoberfest certificate', error);
       throw new Error('Failed to generate certificate');
     }
   }
@@ -108,10 +109,10 @@ class ImageGenerator {
       const outputPath = './assets/birthday/output.png';
       await fs.writeFile(outputPath, buffer);
 
-      console.log('Birthday image generated successfully', { name: userData.name, age });
+      logger.success(`Birthday image generated successfully for ${userData.name} (age: ${age})`);
       return outputPath;
     } catch (error) {
-      console.error('Failed to generate birthday image:', error);
+      logger.errorWithContext('Failed to generate birthday image', error);
       throw new Error('Failed to generate birthday image');
     }
   }

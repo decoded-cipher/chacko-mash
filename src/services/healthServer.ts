@@ -1,4 +1,5 @@
 import express from 'express';
+import logger from '../utils/logger';
 
 class HealthServer {
   private app: express.Application;
@@ -45,7 +46,7 @@ class HealthServer {
 
     // Error handler
     this.app.use((error: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-      console.error('Health server error:', error);
+      logger.errorWithContext('Health server error', error);
       res.status(500).json({
         error: 'Internal Server Error',
         message: 'Something went wrong'
@@ -56,14 +57,14 @@ class HealthServer {
   start(): void {
     const port = process.env.PORT || 3000;
     this.server = this.app.listen(port, () => {
-      console.log(`Health check server running on port ${port}`);
+      logger.success(`Health check server running on port ${port}`);
     });
   }
 
   stop(): void {
     if (this.server) {
       this.server.close(() => {
-        console.log('Health server stopped');
+        logger.success('Health server stopped');
       });
     }
   }

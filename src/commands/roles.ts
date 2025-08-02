@@ -1,4 +1,5 @@
 import { Client, Message } from 'discord.js';
+import logger from '../utils/logger';
 
 export default {
   name: '/roles',
@@ -30,14 +31,14 @@ export default {
         }
       }
 
-      console.log('Roles command executed', {
+      logger.info('Roles command executed', {
         targetRole,
         users: args,
         executor: message.author.id
       });
 
     } catch (error) {
-      console.error('Failed to execute roles command:', error);
+      logger.error('Failed to execute roles command:', error);
       await message.reply('An error occurred while managing roles.');
     }
   },

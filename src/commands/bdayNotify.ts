@@ -1,6 +1,7 @@
 import { Client, EmbedBuilder } from 'discord.js';
 import { CronJob } from 'cron';
 import apiClient from '../services/apiClient';
+import logger from '../utils/logger';
 
 export default {
   name: '/bdayNotify',
@@ -48,7 +49,7 @@ export default {
                   }
                 }
               } catch (error) {
-                console.log('Error processing birthday user:', error);
+                logger.error('Error processing birthday user:', error);
               }
             }
           } else {
@@ -58,14 +59,14 @@ export default {
             }
           }
         } catch (error) {
-          console.log('Error in birthday notification job:', error);
+          logger.error('Error in birthday notification job:', error);
         }
       }, null, true, 'Asia/Kolkata');
 
-      console.log(`Birthday notification cron job started`);
+      logger.info(`Birthday notification cron job started`);
 
     } catch (error) {
-      console.error('Failed to start birthday notification job:', error);
+      logger.error('Failed to start birthday notification job:', error);
     }
   },
 }; 

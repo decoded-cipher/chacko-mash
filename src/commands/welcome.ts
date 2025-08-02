@@ -1,4 +1,5 @@
 import { Client, GuildMember } from 'discord.js';
+import logger from '../utils/logger';
 
 export default {
   name: '/welcome',
@@ -37,14 +38,14 @@ export default {
       
       await guildMember.user.send(dmMessage);
 
-      console.log('Welcome command executed', {
+      logger.info('Welcome command executed', {
         userId: guildMember.user.id,
         username: guildMember.user.username,
         guildId: guildMember.guild.id
       });
 
     } catch (error) {
-      console.error('Failed to execute welcome command:', error);
+      logger.error('Failed to execute welcome command:', error);
     }
   },
 }; 
