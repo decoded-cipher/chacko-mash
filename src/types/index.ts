@@ -1,4 +1,4 @@
-import { Client, Message, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { Client, Message } from 'discord.js';
 
 export interface UserData {
   _id: string;
@@ -38,7 +38,6 @@ export interface CommandMetadata {
 
 export interface Command {
   metadata: CommandMetadata;
-  slashCommand?: SlashCommandBuilder;
   execute: (client: Client, ...args: any[]) => Promise<void> | void;
   validate?: (args: any[]) => boolean | string;
   onLoad?: () => Promise<void>;
@@ -54,36 +53,11 @@ export interface CommandRegistry {
   reload: () => Promise<void>;
 }
 
-export interface Event {
-  name: string;
-  once?: boolean;
-  execute: (client: Client, ...args: any[]) => Promise<void> | void;
-}
-
-export interface Service {
-  name: string;
-  initialize: () => Promise<void>;
-  shutdown: () => Promise<void>;
-}
-
-export interface Logger {
-  info: (message: string, meta?: any) => void;
-  error: (message: string, meta?: any) => void;
-  warn: (message: string, meta?: any) => void;
-  debug: (message: string, meta?: any) => void;
-}
-
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   error?: string;
   message?: string;
-}
-
-export interface BirthdayWish {
-  age: number;
-  ageWish: string;
-  template: string;
 }
 
 export interface ImageGenerationData {

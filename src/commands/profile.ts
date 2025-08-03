@@ -16,11 +16,6 @@ export default {
   },
   async execute(_client: Client, message: Message): Promise<void> {
     try {
-      if (!message.guild) {
-        await message.reply('This command can only be used in a server.');
-        return;
-      }
-
       const welcomeReply = await message.reply(`Welcome <@${message.author.id}> to Inovus Profiles!`);
       setTimeout(() => {
         welcomeReply.delete().catch(logger.error);

@@ -64,21 +64,6 @@ class EmailService {
       throw new Error('Failed to send email');
     }
   }
-
-  async verifyConnection(): Promise<boolean> {
-    try {
-      if (!this.transporter) {
-        logger.warn('Email service not configured');
-        return false;
-      }
-      await this.transporter.verify();
-      logger.info('Email service connection verified');
-      return true;
-    } catch (error) {
-      logger.error('Email service connection failed:', error);
-      return false;
-    }
-  }
 }
 
 export default new EmailService(); 
