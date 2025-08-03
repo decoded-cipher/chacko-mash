@@ -35,10 +35,10 @@ export default {
       //   await lobbyChannel.send({ files: ['https://user-images.githubusercontent.com/44474792/126882345-a229f1c8-0ad6-455e-b2e4-eba1b580cb2e.jpg'] });
       // }
 
-      // const targetChannel = client.channels.cache.get(process.env.TARGET_CHANNEL || '');
-      // if (targetChannel && 'send' in targetChannel) {
-      //   await targetChannel.send("Server Time : " + new Date().toString());
-      // }
+      const targetChannel = client.channels.cache.get(process.env.TARGET_CHANNEL || '');
+      if (targetChannel && 'send' in targetChannel) {
+        await targetChannel.send("Server Time : " + new Date().toString());
+      }
 
       logger.info('Bot ready event executed successfully');
 

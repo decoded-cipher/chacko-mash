@@ -1,10 +1,9 @@
 import dotenv from 'dotenv';
+dotenv.config();
+
 import DiscordBot from './core/DiscordBot';
 import HealthServer from './services/healthServer';
 import logger from './utils/logger';
-
-// Load environment variables
-dotenv.config();
 
 class Application {
   private bot: DiscordBot;

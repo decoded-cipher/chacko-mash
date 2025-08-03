@@ -58,7 +58,7 @@ export default {
       const commandCount = this.getCommandCount(client);
       
       // Get environment info
-      const environment = process.env.ENV || 'UNKNOWN';
+      const environment = process.env.NODE_ENV || 'unknown';
       
       // Format uptime
       const days = Math.floor(uptime / (1000 * 60 * 60 * 24));

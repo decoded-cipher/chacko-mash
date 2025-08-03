@@ -44,12 +44,14 @@ const fileFormat = winston.format.combine(
   )
 );
 
-// Create logger
-const baseLogger = winston.createLogger({
-  level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
-  levels,
-  transports: [
-    new winston.transports.Console({ format: consoleFormat }),
+// Create transports array
+const transports: winston.transport[] = [
+  new winston.transports.Console({ format: consoleFormat })
+];
+
+// Add file transports only if ENABLE_LOGS is true
+if (process.env.ENABLE_LOGS === 'true') {
+  transports.push(
     new winston.transports.File({
       filename: path.join(process.cwd(), 'logs', 'combined.log'),
       format: fileFormat
@@ -59,7 +61,14 @@ const baseLogger = winston.createLogger({
       level: 'error',
       format: fileFormat
     })
-  ]
+  );
+}
+
+// Create logger
+const baseLogger = winston.createLogger({
+  level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
+  levels,
+  transports
 });
 
 // Cast to custom logger type and add methods
