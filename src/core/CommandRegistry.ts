@@ -6,7 +6,6 @@ import logger from '../utils/logger';
 
 export class CommandRegistry implements ICommandRegistry {
   public commands: Map<string, Command> = new Map();
-  public categories: Map<string, Command[]> = new Map();
   private commandsPath: string;
   private isWatching: boolean = false;
 
@@ -44,13 +43,6 @@ export class CommandRegistry implements ICommandRegistry {
         }
       }
 
-      // Register by category
-      const category = command.metadata.category;
-      if (!this.categories.has(category)) {
-        this.categories.set(category, []);
-      }
-      this.categories.get(category)!.push(command);
-
       // Call onLoad if available
       if (command.onLoad) {
         command.onLoad().catch(error => {
@@ -58,7 +50,7 @@ export class CommandRegistry implements ICommandRegistry {
         });
       }
 
-      logger.info(`Registered command: ${command.metadata.name} (${category})`);
+      logger.info(`Registered command: ${command.metadata.name}`);
     } catch (error) {
       logger.errorWithContext(`Failed to register command ${command.metadata.name}`, error);
     }
@@ -86,19 +78,6 @@ export class CommandRegistry implements ICommandRegistry {
         }
       }
 
-      // Remove from category
-      const category = command.metadata.category;
-      const categoryCommands = this.categories.get(category);
-      if (categoryCommands) {
-        const index = categoryCommands.indexOf(command);
-        if (index > -1) {
-          categoryCommands.splice(index, 1);
-        }
-        if (categoryCommands.length === 0) {
-          this.categories.delete(category);
-        }
-      }
-
       logger.info(`Unregistered command: ${name}`);
     } catch (error) {
       logger.errorWithContext(`Failed to unregister command ${name}`, error);
@@ -113,9 +92,7 @@ export class CommandRegistry implements ICommandRegistry {
     return Array.from(this.commands.values());
   }
 
-  getByCategory(category: string): Command[] {
-    return this.categories.get(category) || [];
-  }
+
 
   async reload(): Promise<void> {
     try {
@@ -123,7 +100,6 @@ export class CommandRegistry implements ICommandRegistry {
       
       // Clear existing commands
       this.commands.clear();
-      this.categories.clear();
 
       // Reload all commands
       await this.loadAllCommands();
@@ -136,7 +112,7 @@ export class CommandRegistry implements ICommandRegistry {
   }
 
   private validateCommand(command: Command): boolean {
-    const requiredFields = ['name', 'description', 'category', 'usage', 'examples'];
+    const requiredFields = ['name', 'description', 'usage', 'examples'];
     
     for (const field of requiredFields) {
       if (!command.metadata[field as keyof typeof command.metadata]) {
@@ -231,7 +207,6 @@ export class CommandRegistry implements ICommandRegistry {
       }
 
       this.commands.clear();
-      this.categories.clear();
       
       logger.info('Command registry shutdown successfully');
     } catch (error) {

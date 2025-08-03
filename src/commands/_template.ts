@@ -19,7 +19,6 @@ export default {
   metadata: {
     name: '/template', // Change this to your command name
     description: 'Template command description', // Describe what your command does
-    category: 'Utility', // Choose: Utility, Admin, Fun, System, Special, User
     usage: '/template [args]', // Show how to use the command
     examples: ['/template', '/template arg1', '/template arg1 arg2'], // Provide usage examples
     permissions: [], // Add required permissions if any

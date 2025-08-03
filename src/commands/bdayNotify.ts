@@ -7,7 +7,6 @@ export default {
   metadata: {
     name: '/bdayNotify',
     description: 'Daily birthday notification cron job',
-    category: 'System',
     usage: '/bdayNotify',
     examples: ['/bdayNotify'],
     permissions: [],
@@ -36,7 +35,7 @@ export default {
                   const successPost = new EmbedBuilder()
                     .setColor('#28a745')
                     .setTitle(':ribbon:   Birthday Notification   :ribbon:')
-                    .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${extUser.name}** - <@${extUser._id}>\n> $bday | #general | ${extUser._id}\n.`)
+                    .setDescription(`Hey, did you know!\nSomeone here on our server is celebrating their birthday today!\n\n> **${extUser.name}** - <@${extUser._id}>\n> $birthday | #general | ${extUser._id}\n.`)
                     .setFooter({ text: 'Copy & Paste the command to generate Birthday Day Wish' });
 
                   const targetChannel = client.channels.cache.get(process.env.TARGET_CHANNEL || '');

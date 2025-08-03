@@ -5,7 +5,6 @@ export default {
   metadata: {
     name: '/ping',
     description: 'Check bot latency and response time',
-    category: 'Utility',
     usage: '/ping',
     examples: ['/ping'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],

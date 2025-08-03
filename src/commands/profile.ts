@@ -5,7 +5,6 @@ export default {
   metadata: {
     name: '/profile',
     description: 'Edit user profile',
-    category: 'User',
     usage: '/profile',
     examples: ['/profile', '/edit-profile'],
     permissions: [],

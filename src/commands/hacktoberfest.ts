@@ -9,7 +9,6 @@ export default {
   metadata: {
     name: '/hacktoberfest',
     description: 'Process hacktoberfest certificate generation',
-    category: 'Special',
     usage: '/hacktoberfest',
     examples: ['/hacktoberfest'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],

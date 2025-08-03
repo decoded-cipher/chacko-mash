@@ -5,7 +5,6 @@ export default {
   metadata: {
     name: '/welcome',
     description: 'Welcome new members',
-    category: 'System',
     usage: '/welcome <guildMember>',
     examples: ['/welcome'],
     permissions: [],

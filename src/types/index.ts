@@ -26,7 +26,6 @@ export interface HacktoberfestData {
 export interface CommandMetadata {
   name: string;
   description: string;
-  category: string;
   usage: string;
   examples: string[];
   permissions?: string[];
@@ -48,12 +47,10 @@ export interface Command {
 
 export interface CommandRegistry {
   commands: Map<string, Command>;
-  categories: Map<string, Command[]>;
   register: (command: Command) => void;
   unregister: (name: string) => void;
   get: (name: string) => Command | undefined;
   getAll: () => Command[];
-  getByCategory: (category: string) => Command[];
   reload: () => Promise<void>;
 }
 

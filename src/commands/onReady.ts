@@ -5,7 +5,6 @@ export default {
   metadata: {
     name: '/onReady',
     description: 'Bot ready event handler',
-    category: 'System',
     usage: '/onReady',
     examples: ['/onReady'],
     permissions: [],

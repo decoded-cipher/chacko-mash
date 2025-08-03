@@ -5,7 +5,6 @@ export default {
   metadata: {
     name: '/help',
     description: 'Show available commands',
-    category: 'Utility',
     usage: '/help [category]',
     examples: ['/help', '/help Utility', '/help Admin'],
     permissions: [],
@@ -29,19 +28,19 @@ export default {
           name: "bdayWish",
           color: "#ff2cda",
           title: ":birthday:   Generate Birthday Wish",
-          description: "**$bday | <#channel_id> | <user_id>**\n\nTo post a birthday wish by **InoBot** in any specified channel. This will also generate a custom unique **Birthday Wish Card**.",
+          description: "**$birthday | <#channel_id> | <user_id>**\n\nTo post a birthday wish by **InoBot** in any specified channel. This will also generate a custom unique **Birthday Wish Card**.",
           permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02']
         }, {
           name: "assignRole",
           color: "#ff702c",
           title: ":crown:   Assign Server Roles",
-          description: "**$role | <@role_id> | <@user_01> <@user_02>**\n\nTo assign a role to any no: of users at the same time by **InoBot**.  This command will notify the role assignment in <#883465290556530748> channel & DM respective users about their new role.",
+          description: "**$role | <role_id> | <user_01> <user_02>**\n\nTo assign a role to any no: of users at the same time by **InoBot**.  This command will notify the role assignment in <#883465290556530748> channel & DM respective users about their new role.",
           permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02']
         }, {
           name: "dmServerMember",
           color: "#2cd5ff",
           title: ":envelope_with_arrow:   DM Server Role(s) or User(s)",
-          description: "**$dm | <@user_id> <@role_id> | <Enter the message>\n\n**To send a **Direct Message** to any role(s) or any no: of users at the same time by **InoBot**.  This command will also notify the message delivery in the <#883465290556530748> channel.",
+          description: "**$dm | <user_id/role_id> | <Enter the message>**\n\nTo send a **Direct Message** to any role(s) or any no: of users at the same time by **InoBot**.  This command will also notify the message delivery in the <#883465290556530748> channel.",
           permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02']
         }, {
           name: "ping",

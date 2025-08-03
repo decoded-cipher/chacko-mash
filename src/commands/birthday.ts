@@ -1,24 +1,24 @@
-import { Client, TextChannel } from 'discord.js';
-import { UserData } from '../types';
+import { Client, TextChannel, Message } from 'discord.js';
 import imageGenerator from '../utils/imageGenerator';
+import apiClient from '../services/apiClient';
 import logger from '../utils/logger';
 
 export default {
   metadata: {
-    name: '/birthday',
+    name: '$birthday',
     description: 'Generate birthday wishes and images',
-    category: 'Fun',
-    usage: '/birthday <targetChannel> <userData>',
-    examples: ['/birthday 123456789 userData'],
-    permissions: [],
+    usage: '$birthday | <#channel_id> | <user_id>',
+    examples: ['$birthday | #general | 123456789', '$birthday | #birthdays | 987654321'],
+    permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 10,
     enabled: true,
-    aliases: ['/bday', '/birthday-wish'],
+    aliases: ['$bday', '$birthday-wish'],
     requiresGuild: true,
     requiresDM: false,
   },
-  async execute(client: Client, targetChannel: string, userData: UserData): Promise<void> {
+  async execute(client: Client, message: Message, targetChannel: string, userId: string): Promise<void> {
     try {
+      const userData = await apiClient.getExtUserData(userId);
       logger.command('birthday', userData._id);
 
       // Generate birthday image using the separate service
@@ -36,14 +36,16 @@ export default {
 
       const age = new Date().getFullYear() - userData.dob.year;
       logger.success(`Birthday command executed successfully for ${userData.name} (age: ${age})`);
+      
+      await message.reply('Birthday wish generated successfully!');
     } catch (error) {
       logger.errorWithContext('Failed to execute birthday command', error);
-      throw error;
+      await message.reply('Failed to process birthday command. User may not exist in the database.');
     }
   },
   validate(args: any[]): boolean | string {
     if (args.length < 2) {
-      return 'Birthday command requires target channel and user data';
+      return 'Birthday command requires channel ID and user ID';
     }
     return true;
   },

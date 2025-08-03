@@ -23,7 +23,6 @@ export default {
   metadata: {
     name: '/command-name',
     description: 'Command description',
-    category: 'Category',
     usage: '/command-name [args]',
     examples: ['/command-name', '/command-name arg1'],
     permissions: [],
@@ -60,7 +59,7 @@ export default {
 
 - **name**: The primary command name (e.g., '/help', '$bot')
 - **description**: What the command does
-- **category**: Command category (Utility, Admin, Fun, System, Special, User)
+
 - **usage**: How to use the command
 - **examples**: Array of usage examples
 
@@ -73,14 +72,7 @@ export default {
 - **requiresGuild**: Whether command only works in servers (default: false)
 - **requiresDM**: Whether command only works in DMs (default: false)
 
-## Categories
 
-- **Utility**: General utility commands (help, ping, info, etc.)
-- **Admin**: Administrative commands (roles, permissions, bot messages, etc.)
-- **Fun**: Entertainment commands (games, jokes, birthday wishes, etc.)
-- **System**: System-level commands (startup, maintenance, notifications, etc.)
-- **Special**: Special event commands (hacktoberfest, etc.)
-- **User**: User-related commands (profile, settings, etc.)
 
 ## Creating a New Command
 
@@ -94,7 +86,6 @@ export default {
    metadata: {
      name: '/mycommand',
      description: 'My awesome command',
-     category: 'Utility',
      usage: '/mycommand [option]',
      examples: ['/mycommand', '/mycommand option1'],
      // ... other fields
@@ -239,8 +230,7 @@ const allCommands = commandRegistry.getAll();
 // Get command by name
 const command = commandRegistry.get('/help');
 
-// Get commands by category
-const utilityCommands = commandRegistry.getByCategory('Utility');
+
 
 // Reload all commands
 await commandRegistry.reload();
@@ -299,7 +289,7 @@ The new system is backward compatible with the old command structure, but using 
 ### Prefix Commands as Commands
 The old system had hardcoded support functions for prefix commands. Now they're all proper commands:
 - `$bot` → `/bot` command
-- `$bday` → `/bday` command  
+- `$birthday` → `/birthday` command  
 - `$role` → `/role` command
 - `$dm` → `/dm` command
 

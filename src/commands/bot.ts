@@ -5,7 +5,6 @@ export default {
   metadata: {
     name: '$bot',
     description: 'Send custom message to a channel',
-    category: 'Admin',
     usage: '$bot | <#channel_id> | <message>',
     examples: ['$bot | #general | Hello everyone!', '$bot | #announcements | Important announcement'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
