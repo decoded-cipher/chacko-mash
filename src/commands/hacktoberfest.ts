@@ -13,7 +13,7 @@ export default {
     examples: ['/hacktoberfest'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 60,
-    enabled: true,
+    enabled: false,
     aliases: ['/hf', '/hacktober'],
     requiresGuild: true,
     requiresDM: false,

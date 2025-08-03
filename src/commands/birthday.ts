@@ -11,7 +11,7 @@ export default {
     examples: ['$birthday | #general | 123456789', '$birthday | #birthdays | 987654321'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 10,
-    enabled: true,
+    enabled: false,
     aliases: ['$bday', '$birthday-wish'],
     requiresGuild: true,
     requiresDM: false,

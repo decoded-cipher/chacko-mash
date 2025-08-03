@@ -9,7 +9,7 @@ export default {
     examples: ['$role | 123456789 | 987654321', '$role | 456789123 | 111222333 444555666'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 5,
-    enabled: true,
+    enabled: false,
     aliases: ['$roles', '$assign-role', '$add-role'],
     requiresGuild: true,
     requiresDM: false,
