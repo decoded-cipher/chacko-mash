@@ -1,35 +1,23 @@
-import dotenv from 'dotenv';
-dotenv.config();
+require('dotenv').config();
 
-import DiscordBot from './core/DiscordBot';
-import HealthServer from './services/healthServer';
-import logger from './utils/logger';
+const DiscordBot = require('./src/core/DiscordBot');
+const HealthServer = require('./src/services/healthServer');
+const logger = require('./src/utils/logger');
 
 class Application {
-  private bot: DiscordBot;
-  private healthServer: HealthServer;
-
   constructor() {
     this.bot = new DiscordBot();
     this.healthServer = new HealthServer();
   }
 
-  async start(): Promise<void> {
+  async start() {
     try {
       logger.section('Application Startup');
-
-      // Start health server
       this.healthServer.start();
-
-      // Initialize Discord bot
       await this.bot.initialize();
-
-      // Set up event handlers
+      global.discordBot = this.bot;
       this.setupEventHandlers();
-
-      // Graceful shutdown handling
       this.setupGracefulShutdown();
-
       logger.success('Application started successfully');
     } catch (error) {
       logger.errorWithContext('Failed to start application', error);
@@ -37,51 +25,31 @@ class Application {
     }
   }
 
-  private setupEventHandlers(): void {
-    // Bot ready event
+  setupEventHandlers() {
     this.bot.client.on('ready', async () => {
       const command = this.bot.getCommand('/onReady');
-      if (command) {
-        await command.execute(this.bot.client);
-      }
-      
-      // Start birthday notification cron job
+      if (command) await command.execute(this.bot.client);
+
       const bdayNotifyCommand = this.bot.getCommand('/bdayNotify');
-      if (bdayNotifyCommand) {
-        await bdayNotifyCommand.execute(this.bot.client);
-      }
+      if (bdayNotifyCommand) await bdayNotifyCommand.execute(this.bot.client);
     });
 
-    // Guild member add
     this.bot.client.on('guildMemberAdd', async (member) => {
       const command = this.bot.getCommand('/welcome');
-      if (command) {
-        await command.execute(this.bot.client, member);
-      }
+      if (command) await command.execute(this.bot.client, member);
     });
 
-    // Error handling
-    this.bot.client.on('error', (error) => {
-      logger.errorWithContext('Discord client error', error);
-    });
-
-    this.bot.client.on('warn', (warning) => {
-      logger.warn('Discord client warning:', warning);
-    });
+    this.bot.client.on('error', (error) => logger.errorWithContext('Discord client error', error));
+    this.bot.client.on('warn', (warning) => logger.warn('Discord client warning:', warning));
   }
 
-  private setupGracefulShutdown(): void {
-    const shutdown = async (signal: string) => {
+  setupGracefulShutdown() {
+    const shutdown = async (signal) => {
       logger.section('Graceful Shutdown');
       logger.info(`Received ${signal}. Starting graceful shutdown...`);
-
       try {
-        // Stop health server
         this.healthServer.stop();
-
-        // Shutdown Discord bot
         await this.bot.shutdown();
-
         logger.success('Graceful shutdown completed');
         process.exit(0);
       } catch (error) {
@@ -103,9 +71,8 @@ class Application {
   }
 }
 
-// Start the application
 const app = new Application();
 app.start().catch((error) => {
   logger.error('Failed to start application:', error);
   process.exit(1);
-}); 
+});

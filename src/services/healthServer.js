@@ -1,27 +1,25 @@
-import express from 'express';
-import logger from '../utils/logger';
+const express = require('express');
+const logger = require('../utils/logger');
 
 class HealthServer {
-  private app: express.Application;
-  private server: any;
-
   constructor() {
     this.app = express();
+    this.server = null;
     this.setupMiddleware();
     this.setupRoutes();
   }
 
-  private setupMiddleware(): void {
+  setupMiddleware() {
     this.app.use(express.json());
   }
 
-  private setupRoutes(): void {
+  setupRoutes() {
     this.app.get('/health', (_req, res) => {
       res.json({
         status: 'OK',
         message: 'Discord bot is running',
         timestamp: new Date().toISOString(),
-        uptime: process.uptime()
+        uptime: process.uptime(),
       });
     });
 
@@ -29,45 +27,36 @@ class HealthServer {
       res.json({
         message: 'Chacko Mash Discord Bot',
         status: 'Running',
-        endpoints: {
-          health: '/health'
-        }
+        endpoints: { health: '/health' },
       });
     });
 
-    // 404 handler
     this.app.use('*', (req, res) => {
       res.status(404).json({
         error: 'Not Found',
         message: 'Endpoint not found',
-        path: req.originalUrl
+        path: req.originalUrl,
       });
     });
 
-    // Error handler
-    this.app.use((error: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    this.app.use((error, _req, res) => {
       logger.errorWithContext('Health server error', error);
-      res.status(500).json({
-        error: 'Internal Server Error',
-        message: 'Something went wrong'
-      });
+      res.status(500).json({ error: 'Internal Server Error', message: 'Something went wrong' });
     });
   }
 
-  start(): void {
+  start() {
     const port = process.env.PORT || 3000;
     this.server = this.app.listen(port, () => {
       logger.success(`Health check server running on port ${port}`);
     });
   }
 
-  stop(): void {
+  stop() {
     if (this.server) {
-      this.server.close(() => {
-        logger.success('Health server stopped');
-      });
+      this.server.close(() => logger.success('Health server stopped'));
     }
   }
 }
 
-export default HealthServer; 
+module.exports = HealthServer;
