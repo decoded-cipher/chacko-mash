@@ -9,10 +9,7 @@ module.exports = {
     examples: ['/ping'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 3,
-    enabled: true,
-    aliases: ['/latency', '/p'],
     requiresGuild: true,
-    requiresDM: false,
   },
 
   async execute(client, message) {

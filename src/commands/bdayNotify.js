@@ -10,11 +10,6 @@ module.exports = {
     usage: '/bdayNotify',
     examples: ['/bdayNotify'],
     permissions: [],
-    cooldown: 0,
-    enabled: true,
-    aliases: ['/birthday-notify', '/bday-cron'],
-    requiresGuild: false,
-    requiresDM: false,
   },
 
   async execute(client) {

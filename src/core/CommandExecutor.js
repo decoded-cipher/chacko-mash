@@ -110,7 +110,7 @@ class CommandExecutor {
 
   async executeCommand(command, ...args) {
     try {
-      if (!command.metadata.enabled) {
+      if (command.metadata.enabled === false) {
         const replyMsg = args.find((arg) => arg?.reply);
         if (replyMsg) await replyMsg.reply('This command is currently disabled.');
         return;

@@ -8,9 +8,6 @@ module.exports = {
     examples: ['/profile', '/edit-profile'],
     permissions: [],
     cooldown: 30,
-    enabled: true,
-    aliases: ['/edit-profile', '/myprofile'],
-    requiresGuild: false,
     requiresDM: true,
   },
 

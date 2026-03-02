@@ -9,9 +9,7 @@ module.exports = {
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 5,
     enabled: false,
-    aliases: ['$roles', '$assign-role'],
     requiresGuild: true,
-    requiresDM: false,
   },
 
   async execute(client, message, targetRole, users) {

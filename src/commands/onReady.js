@@ -7,11 +7,6 @@ module.exports = {
     usage: '/onReady',
     examples: ['/onReady'],
     permissions: [],
-    cooldown: 0,
-    enabled: true,
-    aliases: ['/ready', '/startup'],
-    requiresGuild: false,
-    requiresDM: false,
   },
 
   async execute(client) {

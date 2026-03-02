@@ -7,11 +7,7 @@ module.exports = {
     usage: '/welcome <guildMember>',
     examples: ['/welcome'],
     permissions: [],
-    cooldown: 0,
-    enabled: true,
-    aliases: ['/welcome-user'],
     requiresGuild: true,
-    requiresDM: false,
   },
 
   async execute(client, guildMember) {

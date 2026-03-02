@@ -13,9 +13,7 @@ module.exports = {
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 60,
     enabled: false,
-    aliases: ['/hf', '/hacktober'],
     requiresGuild: true,
-    requiresDM: false,
   },
 
   async execute(client, _message, _reaction, user) {

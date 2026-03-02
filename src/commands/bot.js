@@ -8,10 +8,7 @@ module.exports = {
     examples: ['$bot | #general | Hello everyone!'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 5,
-    enabled: true,
-    aliases: ['$send', '$message'],
     requiresGuild: true,
-    requiresDM: false,
   },
 
   async execute(client, message, targetChannel, content) {

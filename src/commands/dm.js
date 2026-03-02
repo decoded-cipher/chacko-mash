@@ -8,10 +8,7 @@ module.exports = {
     examples: ['$dm | 123456789 | Hello!'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 10,
-    enabled: true,
-    aliases: ['$dmUser', '$direct-message'],
     requiresGuild: true,
-    requiresDM: false,
   },
 
   async execute(client, message, targets, content) {

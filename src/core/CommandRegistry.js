@@ -29,11 +29,6 @@ class CommandRegistry {
         return;
       }
       this.commands.set(command.metadata.name, command);
-      if (command.metadata.aliases) {
-        for (const alias of command.metadata.aliases) {
-          this.commands.set(alias, command);
-        }
-      }
       if (command.onLoad) {
         command.onLoad().catch((err) => logger.error(`Failed to load command ${command.metadata.name}:`, err));
       }
@@ -51,11 +46,6 @@ class CommandRegistry {
         command.onUnload().catch((err) => logger.error(`Failed to unload command ${name}:`, err));
       }
       this.commands.delete(name);
-      if (command.metadata.aliases) {
-        for (const alias of command.metadata.aliases) {
-          this.commands.delete(alias);
-        }
-      }
       logger.info(`Unregistered command: ${name}`);
     } catch (error) {
       logger.errorWithContext(`Failed to unregister command ${name}`, error);

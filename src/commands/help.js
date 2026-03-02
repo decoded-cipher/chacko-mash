@@ -9,10 +9,6 @@ module.exports = {
     examples: ['/help', '/help Utility', '/help Admin'],
     permissions: [],
     cooldown: 5,
-    enabled: true,
-    aliases: ['/h', '/commands'],
-    requiresGuild: false,
-    requiresDM: false,
   },
 
   async execute(_client, message) {

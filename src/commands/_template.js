@@ -13,9 +13,6 @@ module.exports = {
     permissions: [],
     cooldown: 5,
     enabled: false,
-    aliases: ['/t'],
-    requiresGuild: false,
-    requiresDM: false,
   },
 
   async execute(_client, message, ...args) {

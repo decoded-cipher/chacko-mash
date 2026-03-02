@@ -11,9 +11,7 @@ module.exports = {
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 10,
     enabled: false,
-    aliases: ['$bday', '$birthday-wish'],
     requiresGuild: true,
-    requiresDM: false,
   },
 
   async execute(client, message, targetChannel, userId) {
