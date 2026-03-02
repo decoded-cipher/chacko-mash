@@ -1,5 +1,3 @@
-const logger = require('../utils/logger');
-
 module.exports = {
   metadata: {
     name: '$dm',
@@ -51,9 +49,8 @@ module.exports = {
       }
 
       await message.reply(`DM delivery completed. Success: ${successCount}, Failed: ${failCount}`);
-      logger.info('DM command executed', { userId: message.author.id, successCount, failCount });
     } catch (error) {
-      logger.errorWithContext('Failed to execute dm command', error);
+      console.error('Failed to execute dm command:', error);
       await message.reply('An error occurred while sending the DM.');
     }
   },

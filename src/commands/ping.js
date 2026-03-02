@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const logger = require('../utils/logger');
 
 module.exports = {
   metadata: {
@@ -80,9 +79,8 @@ module.exports = {
         .setTimestamp();
 
       await sent.edit({ embeds: [resultEmbed] });
-      logger.info('Ping command executed', { userId: message.author.id, latency });
     } catch (error) {
-      logger.errorWithContext('Failed to execute ping command', error);
+      console.error('Failed to execute ping command:', error);
       await message.reply({
         embeds: [
           new EmbedBuilder()

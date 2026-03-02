@@ -1,5 +1,3 @@
-const logger = require('../utils/logger');
-
 module.exports = {
   metadata: {
     name: '/onReady',
@@ -14,16 +12,14 @@ module.exports = {
         activities: [{ name: 'over Inovus Labs', type: 3 }],
       });
 
-      logger.info(`Logged in as ${client.user?.username}!`);
+      console.log(`Logged in as ${client.user?.tag}`);
 
       const targetChannel = client.channels.cache.get(process.env.TARGET_CHANNEL || '');
       if (targetChannel && 'send' in targetChannel) {
         await targetChannel.send('Server Time: ' + new Date().toString());
       }
-
-      logger.info('Bot ready event executed successfully');
     } catch (error) {
-      logger.error('Failed to execute onReady command:', error);
+      console.error('Failed to execute onReady command:', error);
     }
   },
 

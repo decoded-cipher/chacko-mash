@@ -2,7 +2,6 @@ const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const path = require('path');
 const CommandRegistry = require('./CommandRegistry');
 const CommandExecutor = require('./CommandExecutor');
-const logger = require('../utils/logger');
 
 class DiscordBot {
   constructor() {
@@ -24,13 +23,11 @@ class DiscordBot {
 
   async initialize() {
     try {
-      logger.section('Discord Bot Initialization');
       await this.commandRegistry.initialize();
       this.setupEventHandlers();
       await this.client.login(process.env.DISCORDJS_BOT_TOKEN);
-      logger.success('Discord bot initialized successfully');
     } catch (error) {
-      logger.errorWithContext('Failed to initialize Discord bot', error);
+      console.error('Failed to initialize Discord bot:', error);
       throw error;
     }
   }
@@ -40,10 +37,6 @@ class DiscordBot {
       try {
         if (message.author.bot) return;
         if (!message.guild) {
-          logger.info(`DM from ${message.author.tag}: "${(message.content || '').slice(0, 50)}${(message.content || '').length > 50 ? '...' : ''}"`);
-          if (!message.content || message.content.length === 0) {
-            logger.warn('DM has empty content - enable "Message Content Intent" in Discord Developer Portal → Bot → Privileged Gateway Intents');
-          }
           await this.commandExecutor.executeDirectMessage(message);
           return;
         }
@@ -55,11 +48,11 @@ class DiscordBot {
           await this.commandExecutor.executeSlashCommand(message);
         }
       } catch (error) {
-        logger.error('Error handling message:', error);
+        console.error('Error handling message:', error);
         try {
           await message.reply('An error occurred while processing your command.');
         } catch (replyError) {
-          logger.error('Failed to send error reply:', replyError);
+          console.error('Failed to send error reply:', replyError);
         }
       }
     });
@@ -69,22 +62,16 @@ class DiscordBot {
         if (reaction.partial) await reaction.fetch();
         await this.commandExecutor.executeReaction(reaction, user);
       } catch (error) {
-        logger.error('Error handling reaction:', error);
+        console.error('Error handling reaction:', error);
       }
     });
 
-    this.client.once('ready', () => {
-      logger.success(`Logged in as ${this.client.user?.tag}`);
-    });
-
-    this.client.on('error', (error) => logger.error('Discord client error:', error));
-    this.client.on('disconnect', () => logger.warn('Discord client disconnected'));
+    this.client.on('error', (error) => console.error('Discord client error:', error));
   }
 
   async shutdown() {
     await this.commandRegistry.shutdown();
     await this.client.destroy();
-    logger.info('Discord bot shutdown successfully');
   }
 
   getCommands() {

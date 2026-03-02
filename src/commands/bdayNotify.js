@@ -1,7 +1,6 @@
 const { CronJob } = require('cron');
 const { EmbedBuilder } = require('discord.js');
 const apiClient = require('../services/apiClient');
-const logger = require('../utils/logger');
 
 module.exports = {
   metadata: {
@@ -38,23 +37,22 @@ module.exports = {
                     await targetChannel.send({ embeds: [embed] });
                   }
                 } catch (err) {
-                  logger.error('Error processing birthday user:', err);
+                  console.error('Error processing birthday user:', err);
                 }
               }
             } else if (targetChannel && 'send' in targetChannel) {
               await targetChannel.send('No one is celebrating their birthday today!');
             }
           } catch (err) {
-            logger.error('Error in birthday notification job:', err);
+            console.error('Error in birthday notification job:', err);
           }
         },
         null,
         true,
         'Asia/Kolkata'
       );
-      logger.info('Birthday notification cron job started');
     } catch (error) {
-      logger.error('Failed to start birthday notification job:', error);
+      console.error('Failed to start birthday notification job:', error);
     }
   },
 

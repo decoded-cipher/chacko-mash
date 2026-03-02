@@ -2,7 +2,6 @@ const { EmbedBuilder } = require('discord.js');
 const apiClient = require('../services/apiClient');
 const imageGenerator = require('../utils/imageGenerator');
 const emailService = require('../utils/emailService');
-const logger = require('../utils/logger');
 
 module.exports = {
   metadata: {
@@ -49,10 +48,8 @@ module.exports = {
 
       const discordUser = client.users.cache.get(data.id);
       if (discordUser) await discordUser.send({ embeds: [userEmbed] });
-
-      logger.info('Hacktoberfest command executed', { userId: data.id, certificateId: data.certificateId });
     } catch (error) {
-      logger.error('Failed to execute hacktoberfest command:', error);
+      console.error('Failed to execute hacktoberfest command:', error);
       throw error;
     }
   },

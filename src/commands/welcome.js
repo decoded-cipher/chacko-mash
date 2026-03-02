@@ -1,5 +1,3 @@
-const logger = require('../utils/logger');
-
 module.exports = {
   metadata: {
     name: '/welcome',
@@ -30,10 +28,8 @@ module.exports = {
 
       const dmMessage = `:tada: Welcome to **Inovus Labs**!\n\nPlease fill this form:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeXyH_5QqA8hYPems_uDvljsqjBadrSFuQ1NwdoubkOTV31WA/viewform?usp=pp_url&entry.1728088991=${guildMember.user.id}`;
       await guildMember.user.send(dmMessage);
-
-      logger.info('Welcome command executed', { userId: guildMember.user.id });
     } catch (error) {
-      logger.error('Failed to execute welcome command:', error);
+      console.error('Failed to execute welcome command:', error);
     }
   },
 

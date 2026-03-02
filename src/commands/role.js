@@ -1,5 +1,3 @@
-const logger = require('../utils/logger');
-
 module.exports = {
   metadata: {
     name: '$role',
@@ -47,9 +45,8 @@ module.exports = {
       }
 
       await message.reply(`Role assignment completed. Success: ${successCount}, Failed: ${failCount}`);
-      logger.info('Role command executed', { userId: message.author.id, targetRole, successCount, failCount });
     } catch (error) {
-      logger.errorWithContext('Failed to execute role command', error);
+      console.error('Failed to execute role command:', error);
       await message.reply('An error occurred while managing roles.');
     }
   },

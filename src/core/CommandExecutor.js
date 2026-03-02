@@ -1,4 +1,3 @@
-const logger = require('../utils/logger');
 
 class CommandExecutor {
   constructor(commandRegistry, prefix = '$') {
@@ -20,7 +19,6 @@ class CommandExecutor {
         .split(' | ');
       const cleanTargetChannel = targetChannel?.replace(/[^0-9\s]/g, '') || '';
 
-      if (cmdName) logger.command(cmdName, message.author.id);
       if (!cmdName) {
         await message.reply('Invalid command format. Use `/help` to see available commands.');
         return;
@@ -34,7 +32,7 @@ class CommandExecutor {
 
       await this.executeCommand(command, message, cleanTargetChannel || '', args.join(' '));
     } catch (error) {
-      logger.errorWithContext('Error handling prefixed command', error);
+      console.error('Error handling prefixed command:', error);
       await message.reply('An error occurred while processing your command.');
     }
   }
@@ -46,14 +44,13 @@ class CommandExecutor {
 
       const command = this.commandRegistry.get(commandName);
       if (!command) {
-        logger.warn(`Command not found: ${commandName}`);
         await message.reply(`Command \`${commandName}\` not found. Use \`/help\` to see available commands.`);
         return;
       }
       const args = message.content.split(' ').slice(1);
       await this.executeCommand(command, message, ...args);
     } catch (error) {
-      logger.errorWithContext('Error executing slash command', error);
+      console.error('Error executing slash command:', error);
       await message.reply('An error occurred while processing your command.');
     }
   }
@@ -62,18 +59,12 @@ class CommandExecutor {
     try {
       const content = message.content || '';
       if (content.startsWith('/profile')) {
-        logger.info('Executing /profile command');
         const command = this.commandRegistry.get('/profile');
-        if (command) {
-          await this.executeCommand(command, message);
-        } else {
-          logger.warn('/profile command not found in registry');
-        }
+        if (command) await this.executeCommand(command, message);
       } else {
         const targetChannelId = process.env.TARGET_CHANNEL || '';
         const targetChannel = this.client.channels.cache.get(targetChannelId);
         if (targetChannel && 'send' in targetChannel) {
-          logger.info('Forwarding non-/profile DM to target channel');
           const avatarURL = message.author.displayAvatarURL({ extension: 'png', size: 128 });
           const embed = {
             color: 0x4b9fc3,
@@ -85,12 +76,10 @@ class CommandExecutor {
             footer: { text: new Date().toString() },
           };
           await targetChannel.send({ embeds: [embed] });
-        } else {
-          logger.warn(`Cannot forward DM: TARGET_CHANNEL ${targetChannelId ? 'invalid or bot has no access' : 'not set'}`);
         }
       }
     } catch (error) {
-      logger.errorWithContext('Error handling direct message', error);
+      console.error('Error handling direct message:', error);
     }
   }
 
@@ -115,7 +104,7 @@ class CommandExecutor {
         }
       }
     } catch (error) {
-      logger.error('Error handling reaction:', error);
+      console.error('Error handling reaction:', error);
     }
   }
 
@@ -162,7 +151,7 @@ class CommandExecutor {
 
       await command.execute(this.client, ...args);
     } catch (error) {
-      logger.errorWithContext(`Failed to execute command ${command.metadata.name}`, error);
+      console.error(`Failed to execute command ${command.metadata.name}:`, error);
       const errorMsg = args.find((arg) => arg?.reply);
       if (errorMsg) await errorMsg.reply('An error occurred while processing your command.');
     }

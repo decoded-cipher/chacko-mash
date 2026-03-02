@@ -1,6 +1,5 @@
 const imageGenerator = require('../utils/imageGenerator');
 const apiClient = require('../services/apiClient');
-const logger = require('../utils/logger');
 
 module.exports = {
   metadata: {
@@ -15,8 +14,6 @@ module.exports = {
   async execute(client, message, targetChannel, userId) {
     try {
       const userData = await apiClient.getExtUserData(userId);
-      logger.command('birthday', userData._id);
-
       const imagePath = await imageGenerator.generateBirthdayImage(userData);
       const channel = client.channels.cache.get(targetChannel);
 
@@ -26,10 +23,9 @@ module.exports = {
       await channel.send('https://tenor.com/view/simhavalan-menon-jagathy-malayalam-happy-birthday-santhosha-janmadinam-kuttikku-gif-17580455');
       await channel.send({ files: [imagePath] });
 
-      logger.success(`Birthday command executed for ${userData.name}`);
       await message.reply('Birthday wish generated successfully!');
     } catch (error) {
-      logger.errorWithContext('Failed to execute birthday command', error);
+      console.error('Failed to execute birthday command:', error);
       await message.reply('Failed to process birthday command. User may not exist in the database.');
     }
   },

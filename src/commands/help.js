@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const logger = require('../utils/logger');
 
 module.exports = {
   metadata: {
@@ -95,10 +94,8 @@ module.exports = {
           .setTimestamp();
         if ('send' in message.channel) await message.channel.send({ embeds: [commandEmbed] });
       }
-
-      logger.command('help', message.author.id);
     } catch (error) {
-      logger.errorWithContext('Failed to execute help command', error);
+      console.error('Failed to execute help command:', error);
       await message.reply('An error occurred while displaying help information.');
     }
   },

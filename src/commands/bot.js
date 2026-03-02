@@ -1,5 +1,3 @@
-const logger = require('../utils/logger');
-
 module.exports = {
   metadata: {
     name: '$bot',
@@ -18,9 +16,8 @@ module.exports = {
       } else {
         await message.reply('Invalid channel ID or channel not found.');
       }
-      logger.info('Bot command executed', { userId: message.author.id, targetChannel });
     } catch (error) {
-      logger.errorWithContext('Failed to execute bot command', error);
+      console.error('Failed to execute bot command:', error);
       await message.reply('An error occurred while sending the message.');
     }
   },

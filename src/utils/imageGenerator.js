@@ -1,7 +1,6 @@
 const fs = require('fs/promises');
 const path = require('path');
 const { registerFont, createCanvas, loadImage } = require('canvas');
-const logger = require('./logger');
 
 class ImageGenerator {
   constructor() {
@@ -15,9 +14,8 @@ class ImageGenerator {
       registerFont('./assets/fonts/Gilroy-SemiBold.ttf', { family: 'Gilroy SemiBold' });
       registerFont('./assets/fonts/LithosPro-Regular.otf', { family: 'Lithos Pro Regular' });
       registerFont('./assets/fonts/alex-brush.regular.ttf', { family: 'Alex Brush' });
-      logger.success('Fonts registered successfully');
     } catch (error) {
-      logger.errorWithContext('Failed to register fonts', error);
+      console.error('Failed to register fonts:', error);
     }
   }
 
@@ -46,10 +44,9 @@ class ImageGenerator {
       const buffer = canvas.toBuffer('application/pdf');
       const outputPath = './assets/hacktoberfest/certificate.pdf';
       await fs.writeFile(outputPath, buffer);
-      logger.success(`Hacktoberfest certificate generated successfully for ${data.name}`);
       return outputPath;
     } catch (error) {
-      logger.errorWithContext('Failed to generate hacktoberfest certificate', error);
+      console.error('Failed to generate hacktoberfest certificate:', error);
       throw new Error('Failed to generate certificate');
     }
   }
@@ -91,10 +88,9 @@ class ImageGenerator {
       const buffer = canvas.toBuffer('image/png');
       const outputPath = './assets/birthday/output.png';
       await fs.writeFile(outputPath, buffer);
-      logger.success(`Birthday image generated successfully for ${userData.name} (age: ${age})`);
       return outputPath;
     } catch (error) {
-      logger.errorWithContext('Failed to generate birthday image', error);
+      console.error('Failed to generate birthday image:', error);
       throw new Error('Failed to generate birthday image');
     }
   }
