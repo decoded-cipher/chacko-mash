@@ -26,7 +26,7 @@ class CommandExecutor {
         return;
       }
 
-      const command = this.commandRegistry.get(cmdName);
+      const command = this.commandRegistry.get(this.prefix + cmdName) || this.commandRegistry.get(cmdName);
       if (!command) {
         await message.reply('Invalid command format. Use `/help` to see available commands.');
         return;
@@ -60,22 +60,33 @@ class CommandExecutor {
 
   async executeDirectMessage(message) {
     try {
-      if (message.content.startsWith('/profile')) {
+      const content = message.content || '';
+      if (content.startsWith('/profile')) {
+        logger.info('Executing /profile command');
         const command = this.commandRegistry.get('/profile');
-        if (command) await this.executeCommand(command, message);
+        if (command) {
+          await this.executeCommand(command, message);
+        } else {
+          logger.warn('/profile command not found in registry');
+        }
       } else {
-        const targetChannel = this.client.channels.cache.get(process.env.TARGET_CHANNEL || '');
+        const targetChannelId = process.env.TARGET_CHANNEL || '';
+        const targetChannel = this.client.channels.cache.get(targetChannelId);
         if (targetChannel && 'send' in targetChannel) {
+          logger.info('Forwarding non-/profile DM to target channel');
+          const avatarURL = message.author.displayAvatarURL({ extension: 'png', size: 128 });
           const embed = {
             color: 0x4b9fc3,
             author: {
               name: message.author.username,
-              icon_url: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`,
+              icon_url: avatarURL,
             },
-            description: message.content,
+            description: content || '*[empty message]*',
             footer: { text: new Date().toString() },
           };
           await targetChannel.send({ embeds: [embed] });
+        } else {
+          logger.warn(`Cannot forward DM: TARGET_CHANNEL ${targetChannelId ? 'invalid or bot has no access' : 'not set'}`);
         }
       }
     } catch (error) {

@@ -1,4 +1,4 @@
-const { Client } = require('discord.js');
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const path = require('path');
 const CommandRegistry = require('./CommandRegistry');
 const CommandExecutor = require('./CommandExecutor');
@@ -7,7 +7,14 @@ const logger = require('../utils/logger');
 class DiscordBot {
   constructor() {
     this.client = new Client({
-      intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'MessageContent', 'DirectMessages'],
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.DirectMessages,
+      ],
+      partials: [Partials.Channel],
     });
     const commandsPath = path.join(__dirname, '../commands');
     this.commandRegistry = new CommandRegistry(commandsPath);
@@ -33,6 +40,10 @@ class DiscordBot {
       try {
         if (message.author.bot) return;
         if (!message.guild) {
+          logger.info(`DM from ${message.author.tag}: "${(message.content || '').slice(0, 50)}${(message.content || '').length > 50 ? '...' : ''}"`);
+          if (!message.content || message.content.length === 0) {
+            logger.warn('DM has empty content - enable "Message Content Intent" in Discord Developer Portal → Bot → Privileged Gateway Intents');
+          }
           await this.commandExecutor.executeDirectMessage(message);
           return;
         }
