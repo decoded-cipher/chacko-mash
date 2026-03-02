@@ -8,8 +8,6 @@ module.exports = {
   metadata: {
     name: '/template',
     description: 'Template command',
-    usage: '/template [args]',
-    examples: ['/template'],
     permissions: [],
     cooldown: 5,
     enabled: false,

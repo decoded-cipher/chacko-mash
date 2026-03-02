@@ -6,8 +6,6 @@ module.exports = {
   metadata: {
     name: '$birthday',
     description: 'Generate birthday wishes and images',
-    usage: '$birthday | <#channel_id> | <user_id>',
-    examples: ['$birthday | #general | 123456789'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 10,
     enabled: false,

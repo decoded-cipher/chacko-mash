@@ -4,8 +4,6 @@ module.exports = {
   metadata: {
     name: '/onReady',
     description: 'Bot ready event handler',
-    usage: '/onReady',
-    examples: ['/onReady'],
     permissions: [],
   },
 

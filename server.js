@@ -1,19 +1,16 @@
 require('dotenv').config();
 
 const DiscordBot = require('./src/core/DiscordBot');
-const HealthServer = require('./src/services/healthServer');
 const logger = require('./src/utils/logger');
 
 class Application {
   constructor() {
     this.bot = new DiscordBot();
-    this.healthServer = new HealthServer();
   }
 
   async start() {
     try {
       logger.section('Application Startup');
-      this.healthServer.start();
       await this.bot.initialize();
       global.discordBot = this.bot;
       this.setupEventHandlers();
@@ -48,7 +45,6 @@ class Application {
       logger.section('Graceful Shutdown');
       logger.info(`Received ${signal}. Starting graceful shutdown...`);
       try {
-        this.healthServer.stop();
         await this.bot.shutdown();
         logger.success('Graceful shutdown completed');
         process.exit(0);

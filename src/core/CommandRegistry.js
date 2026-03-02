@@ -73,7 +73,7 @@ class CommandRegistry {
   }
 
   validateCommand(command) {
-    const requiredFields = ['name', 'description', 'usage', 'examples'];
+    const requiredFields = ['name', 'description'];
     for (const field of requiredFields) {
       if (!command.metadata[field]) {
         logger.warn(`Command ${command.metadata.name} missing required field: ${field}`);

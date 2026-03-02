@@ -60,7 +60,7 @@ class CommandExecutor {
 
   async executeDirectMessage(message) {
     try {
-      if (message.content.startsWith('/edit-profile')) {
+      if (message.content.startsWith('/profile')) {
         const command = this.commandRegistry.get('/profile');
         if (command) await this.executeCommand(command, message);
       } else {

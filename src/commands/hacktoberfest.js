@@ -8,8 +8,6 @@ module.exports = {
   metadata: {
     name: '/hacktoberfest',
     description: 'Process hacktoberfest certificate generation',
-    usage: '/hacktoberfest',
-    examples: ['/hacktoberfest'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 60,
     enabled: false,

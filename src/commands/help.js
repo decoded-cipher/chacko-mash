@@ -5,8 +5,6 @@ module.exports = {
   metadata: {
     name: '/help',
     description: 'Show available commands',
-    usage: '/help [category]',
-    examples: ['/help', '/help Utility', '/help Admin'],
     permissions: [],
     cooldown: 5,
   },
@@ -29,6 +27,20 @@ module.exports = {
           permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
         },
         {
+          name: 'assignRole',
+          color: '#9b59b6',
+          title: ':busts_in_silhouette:   Assign Role to Users',
+          description: '**$role | <role_id> | <user_1> <user_2> ...**\n\nTo assign a role to one or more users.',
+          permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
+        },
+        {
+          name: 'birthday',
+          color: '#e74c3c',
+          title: ':birthday:   Generate Birthday Wish',
+          description: '**$birthday | <#channel_id> | <user_id>**\n\nTo generate a birthday wish image and post in a channel.',
+          permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
+        },
+        {
           name: 'ping',
           color: '#00ff00',
           title: ':ping_pong:   Check Bot Latency',
@@ -39,8 +51,15 @@ module.exports = {
           name: 'editProfile',
           color: '#2c2cff',
           title: ':page_facing_up:   Update Inovus Profiles',
-          description: 'Type **/edit-profile** in DM to <@842062518675439617> to update your Inovus Profile.',
+          description: 'Type **/profile** in DM to <@842062518675439617> to update your Inovus Profile.',
           permissions: [],
+        },
+        {
+          name: 'hacktoberfest',
+          color: '#9092ff',
+          title: ':cloud_lightning:   Hacktoberfest Certificate',
+          description: 'React with the **hacktoberfest** emoji on a message in the designated HF channel to request your certificate of contribution.',
+          permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
         },
       ];
 

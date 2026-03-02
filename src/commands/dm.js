@@ -4,8 +4,6 @@ module.exports = {
   metadata: {
     name: '$dm',
     description: 'Send direct message to users or roles',
-    usage: '$dm | <user_id/role_id> | <message>',
-    examples: ['$dm | 123456789 | Hello!'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 10,
     requiresGuild: true,

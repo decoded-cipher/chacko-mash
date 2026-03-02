@@ -4,8 +4,6 @@ module.exports = {
   metadata: {
     name: '$role',
     description: 'Assign role to users',
-    usage: '$role | <role_id> | <user_1> <user_2> ...',
-    examples: ['$role | 123456789 | 987654321'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 5,
     enabled: false,

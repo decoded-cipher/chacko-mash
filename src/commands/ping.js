@@ -5,8 +5,6 @@ module.exports = {
   metadata: {
     name: '/ping',
     description: 'Check bot latency and response time',
-    usage: '/ping',
-    examples: ['/ping'],
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 3,
     requiresGuild: true,

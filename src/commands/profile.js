@@ -4,8 +4,6 @@ module.exports = {
   metadata: {
     name: '/profile',
     description: 'Edit user profile',
-    usage: '/profile',
-    examples: ['/profile', '/edit-profile'],
     permissions: [],
     cooldown: 30,
     requiresDM: true,

@@ -7,8 +7,6 @@ module.exports = {
   metadata: {
     name: '/bdayNotify',
     description: 'Daily birthday notification cron job',
-    usage: '/bdayNotify',
-    examples: ['/bdayNotify'],
     permissions: [],
   },
 

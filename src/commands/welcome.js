@@ -4,8 +4,6 @@ module.exports = {
   metadata: {
     name: '/welcome',
     description: 'Welcome new members',
-    usage: '/welcome <guildMember>',
-    examples: ['/welcome'],
     permissions: [],
     requiresGuild: true,
   },
