@@ -95,17 +95,22 @@ class CommandRegistry {
 
   async setupHotReload() {
     if (this.isWatching) return;
-    this.isWatching = true;
-    watch(this.commandsPath, { recursive: true }, async (_eventType, filename) => {
-      if (!filename || !filename.endsWith('.js') || filename.startsWith('_')) return;
-      setTimeout(async () => {
-        try {
-          await this.reload();
-        } catch (err) {
-          console.error('Failed to reload commands after file change:', err);
-        }
-      }, 1000);
-    });
+    try {
+      watch(this.commandsPath, { recursive: true }, async (_eventType, filename) => {
+        if (!filename || !filename.endsWith('.js') || filename.startsWith('_')) return;
+        setTimeout(async () => {
+          try {
+            await this.reload();
+          } catch (err) {
+            console.error('Failed to reload commands after file change:', err);
+          }
+        }, 1000);
+      });
+      this.isWatching = true;
+    } catch (err) {
+      // Recursive watch unavailable on some platforms (e.g. production Linux)
+      this.isWatching = false;
+    }
   }
 
   async shutdown() {
