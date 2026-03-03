@@ -25,15 +25,15 @@ module.exports = {
           description: '**$dm | <user_id/role_id> | <Enter the message>**\n\nTo send a **Direct Message** to any role(s) or users.',
           permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
         },
-        // {
-        //   name: 'assignRole',
-        //   color: '#9b59b6',
-        //   title: ':busts_in_silhouette:   Assign Role to Users',
-        //   description: '**$role | <role_id> | <user_1> <user_2> ...**\n\nTo assign a role to one or more users.',
-        //   permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
-        // },
         {
-          name: 'bday',
+          name: 'assignRole',
+          color: '#9b59b6',
+          title: ':busts_in_silhouette:   Assign Role to Users',
+          description: '**$role | <role_id> | <user_1> <user_2> ...**\n\nTo assign a role to one or more users.',
+          permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
+        },
+        {
+          name: 'birthday',
           color: '#e74c3c',
           title: ':birthday:   Generate Birthday Wish',
           description: '**$bday** | <#channel_id> | <user_id>\n\nTo generate a birthday wish image and post in a channel.',

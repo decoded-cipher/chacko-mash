@@ -4,7 +4,6 @@ module.exports = {
     description: 'Assign role to users',
     permissions: ['PRIORITY_ROLE_01', 'PRIORITY_ROLE_02'],
     cooldown: 5,
-    enabled: false,
     requiresGuild: true,
   },
 
