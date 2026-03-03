@@ -13,7 +13,7 @@ class Application {
       global.discordBot = this.bot;
       this.setupEventHandlers();
       this.setupGracefulShutdown();
-      console.log('Application started');
+      console.log('\n--- Application started successfully');
     } catch (error) {
       console.error('Failed to start application:', error);
       process.exit(1);

@@ -27,6 +27,9 @@ A Discord bot for Inovus Labs with birthday wishes, welcome messages, and more.
    PRIORITY_ROLE_02=role_id
    API_BASE_URL=your_api_url      # optional
    INOVUS_AUTH_TOKEN=token        # optional
+   CLOUDFLARE_API_TOKEN=...       # optional - for D1 (Cloudflare API)
+   CLOUDFLARE_ACCOUNT_ID=...      # optional - your Cloudflare account ID
+   D1_DATABASE_ID=...             # optional - D1 database UUID
    EMAIL_SERVICE=gmail            # optional (for Hacktoberfest)
    EMAIL_USER=your_email
    EMAIL_PASS=your_password

@@ -1,6 +1,6 @@
 const { CronJob } = require('cron');
 const { EmbedBuilder } = require('discord.js');
-const apiClient = require('../services/apiClient');
+const d1Client = require('../services/d1Client');
 
 module.exports = {
   metadata: {
@@ -16,22 +16,32 @@ module.exports = {
         async () => {
           const mm = new Date().getMonth() + 1;
           const dd = new Date().getDate();
+          const targetChannel = client.channels.cache.get(process.env.TARGET_CHANNEL || '');
+
           try {
-            const users = await apiClient.getBdayUser(dd, mm);
-            const targetChannel = client.channels.cache.get(process.env.TARGET_CHANNEL || '');
+            if (!d1Client.ready) return;
+
+            const users = await d1Client.getBirthdayStudents(dd, mm);
 
             if (Array.isArray(users) && users.length > 0) {
-              for (const user of users) {
+              for (const student of users) {
                 try {
-                  const extUser = await apiClient.getExtUserData(user._id);
-                  const avatar = extUser.discord.avatar.split('/').pop();
+                  const discordId = student.discord_user_id;
+                  const name = d1Client.getStudentDisplayName(student);
+                  const discordUser = await client.users.fetch(discordId).catch(() => null);
+                  const hasCustomAvatar = d1Client.hasCustomAvatar(discordUser);
+
                   const embed = new EmbedBuilder()
-                    .setColor(avatar !== 'null.png' ? '#28a745' : '#c25827')
+                    .setColor(hasCustomAvatar ? '#28a745' : '#c25827')
                     .setTitle(':ribbon:   Birthday Notification   :ribbon:')
                     .setDescription(
-                      `Someone is celebrating today!\n\n> **${extUser.name}** - <@${extUser._id}>\n> $birthday | #general | ${extUser._id}`
+                      `Someone is celebrating today!\n\n> **${name}** - <@${discordId}>\n> $birthday | #general | ${discordId}`
                     )
-                    .setFooter({ text: avatar !== 'null.png' ? 'Copy & Paste the command to generate Birthday Wish' : "Birthday Wish Card can't be generated - update profile pic!" });
+                    .setFooter({
+                      text: hasCustomAvatar
+                        ? 'Copy & Paste the command to generate Birthday Wish'
+                        : "Birthday Wish Card can't be generated - update profile pic!",
+                    });
 
                   if (targetChannel && 'send' in targetChannel) {
                     await targetChannel.send({ embeds: [embed] });
