@@ -12,7 +12,7 @@ module.exports = {
   async execute(client) {
     try {
       new CronJob(
-        '0 6 * * *',
+        process.env.BDAY_CRON,
         async () => {
           const mm = new Date().getMonth() + 1;
           const dd = new Date().getDate();
@@ -51,7 +51,12 @@ module.exports = {
                 }
               }
             } else if (targetChannel && 'send' in targetChannel) {
-              await targetChannel.send('No one is celebrating their birthday today!');
+              const noBdayEmbed = new EmbedBuilder()
+                .setColor(0x9ca3af)
+                .setTitle(':birthday:   No birthdays today')
+                .setDescription("No one from the community has a birthday today. We'll be back tomorrow with wishes!")
+                .setTimestamp();
+              await targetChannel.send({ embeds: [noBdayEmbed] });
             }
           } catch (err) {
             console.error('Error in birthday notification job:', err);
