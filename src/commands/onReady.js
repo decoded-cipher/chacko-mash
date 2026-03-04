@@ -13,7 +13,7 @@ module.exports = {
     try {
       client.user?.setPresence({
         status: 'online',
-        activities: [{ name: 'over Inovus Labs', type: 3 }],
+        activities: [{ name: 'Watching over Inovus Labs', type: 3 }],
       });
 
       console.log(`--- Logged in as ${client.user?.tag}`);

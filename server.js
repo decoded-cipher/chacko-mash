@@ -7,6 +7,23 @@ class Application {
     this.bot = new DiscordBot();
   }
 
+  startHeartbeat() {
+    if(!process.env.HEARTBEAT_URL || !process.env.HEARTBEAT_INTERVAL) {
+      console.warn('HEARTBEAT_URL or HEARTBEAT_INTERVAL not set, skipping uptime heartbeat');
+      return;
+    }
+
+    const ping = async () => {
+      try {
+        await fetch(process.env.HEARTBEAT_URL, { method: 'HEAD' });
+      } catch (e) {
+        console.error('[heartbeat]', e.message);
+      }
+      setTimeout(ping, Number(process.env.HEARTBEAT_INTERVAL) * 60 * 1000).unref();
+    };
+    ping();
+  }
+
   async start() {
     try {
       await this.bot.initialize();
@@ -22,6 +39,8 @@ class Application {
 
   setupEventHandlers() {
     this.bot.client.on('ready', async () => {
+      this.startHeartbeat();
+
       const command = this.bot.getCommand('/onReady');
       if (command) await command.execute(this.bot.client);
 

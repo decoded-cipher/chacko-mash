@@ -33,6 +33,8 @@ A Discord bot for Inovus Labs with birthday wishes, welcome messages, and more.
    EMAIL_SERVICE=gmail            # optional (for Hacktoberfest)
    EMAIL_USER=your_email
    EMAIL_PASS=your_password
+   HEARTBEAT_URL=...              # optional - Better Stack heartbeat URL
+   HEARTBEAT_INTERVAL=5           # optional - interval in minutes (default: 5)
    ```
 
 3. Run
